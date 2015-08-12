@@ -16,7 +16,6 @@ namespace Glinterion.Models
         public string Description { get; set; }
 
         public double Rating { get; set; }
-
-
+        
     }
 }
