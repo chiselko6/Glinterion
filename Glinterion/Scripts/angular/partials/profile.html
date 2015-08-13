@@ -18,6 +18,11 @@
 				Size: {{profile.totalSize}}
 			</div>
 		</div>
+		<div class="gallery">
+			<div ng-repeat="photo in profile.user.photos">
+				<img ng-src="{{photo.SrcPreview}}">
+			</div>
+		</div>
 	</div>
 
 </div>

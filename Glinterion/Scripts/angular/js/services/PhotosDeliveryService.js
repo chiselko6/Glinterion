@@ -4,6 +4,6 @@ PhotosDeliveryService.$inject = ["$resource"];
 
 function PhotosDeliveryService($resource) {
     return $resource("../../api/photos", {}, {
-        query: { method: "GET", params: {}, isArray: true }
+        query: { method: "GET", params: {startId: 4, endId: 7}, isArray: true }
     });
 }

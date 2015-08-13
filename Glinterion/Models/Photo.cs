@@ -16,6 +16,8 @@ namespace Glinterion.Models
         public string Description { get; set; }
 
         public double Rating { get; set; }
-        
+
+        // in MB
+        public double Size { get; set; }
     }
 }

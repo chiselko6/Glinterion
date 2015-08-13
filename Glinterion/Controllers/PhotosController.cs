@@ -23,7 +23,13 @@ namespace Glinterion.Controllers
             return db.Photos;
         }
 
-        // GET: api/Photos/5
+        // GET: api/Photos/
+        public IQueryable<Photo> GetPhotos(int startId, int endId)
+        {
+            return db.Photos.Skip(startId - 1).Take(endId - startId + 1);
+        }
+
+            // GET: api/Photos/5
         [ResponseType(typeof(Photo))]
         public IHttpActionResult GetPhoto(int id)
         {
