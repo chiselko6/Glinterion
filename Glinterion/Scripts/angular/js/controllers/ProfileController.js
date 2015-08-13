@@ -2,12 +2,16 @@ angular.module("glinterionControllers").controller("ProfileController", ProfileC
 
 ProfileController.$inject = [
 	"$routeParams", 
-	"$scope",
 	"PhotosDeliveryService"
 ];
 
-function ProfileController($routeParams, $scope, PhotosDelivery) {
+function ProfileController($routeParams, PhotosDelivery) {
 	var profile = this;
 
-	profile.userId = $routeParams.userId;
+	profile.user = {};
+	profile.user.login = "chiselko6";
+	profile.user.accountType = "Simple";
+	profile.user.Id = $routeParams.userId;
+	profile.user.photos = PhotosDelivery.query();
+	
 }

@@ -1,0 +1,17 @@
+.avatar {
+	width: 200px;
+	height: 200px;
+	background-color: red;
+	display: inline-block;
+	float: left;
+}
+
+.user--info {
+	display: inline-block;
+	margin-left: 50px;
+	font-size: 20px;
+}
+
+.account-type {
+	color: green;
+}

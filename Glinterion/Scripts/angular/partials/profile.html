@@ -1,6 +1,23 @@
 <div ng-controller="ProfileController as profile">
-	<div class="col-sm-offset-2">
-		profile page
-		<div>{{profile.userId}}</div>
+	
+	<div class="col-md-offset-1">
+		<div class="avatar">
+			<img ng-src="{{profile.user.AvatarSrc}}">
+		</div>
+		<div class="user--info">
+			<div class="user--login">
+				<div class="user--login">
+					Hello, {{profile.user.login}}
+				</div>
+			</div>
+			<div class="user--account">
+				You have <span class="account-type">{{profile.user.accountType}}</span> account
+			</div>
+			<div class="user--album-details">
+				Photos uploaded: {{profile.user.photos.length}}
+				Size: {{profile.totalSize}}
+			</div>
+		</div>
 	</div>
+
 </div>
