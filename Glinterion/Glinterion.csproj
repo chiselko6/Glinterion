@@ -243,7 +243,7 @@
     <Content Include="Scripts\angular\index.html" />
     <Content Include="Scripts\angular\js\controllers\controllersModule.js" />
     <Content Include="Scripts\angular\js\controllers\HomeController.js" />
-    <Content Include="Scripts\angular\js\main.js" />
+    <Content Include="Scripts\angular\js\app.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
@@ -363,8 +363,11 @@
     <Content Include="Scripts\angular\bower_components\jquery\bower.json" />
     <Content Include="Scripts\angular\bower_components\jquery\dist\jquery.min.map" />
     <Content Include="Scripts\angular\bower_components\jquery\src\sizzle\dist\sizzle.min.map" />
+    <Content Include="Scripts\angular\js\controllers\ProfileController.js" />
     <Content Include="Scripts\angular\js\services\PhotosDeliveryService.js" />
     <Content Include="Scripts\angular\js\services\servicesModule.js" />
+    <Content Include="Scripts\angular\partials\home.html" />
+    <Content Include="Scripts\angular\partials\profile.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -392,7 +395,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\angular\css\" />
-    <Folder Include="Scripts\angular\partials\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

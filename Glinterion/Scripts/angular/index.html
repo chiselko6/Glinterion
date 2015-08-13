@@ -7,24 +7,31 @@
 		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
 
 		<script src="bower_components/angular/angular.js"></script>
-		<script src="bower_components/angular-resource/angular-recource.js"></script>
+		<script src="bower_components/angular-resource/angular-resource.js"></script>
 		<script src="bower_components/angular-route/angular-route.js"></script>
 		
 		<!-- Controllers -->
 		<script src="js/controllers/controllersModule.js"></script>
 		<script src="js/controllers/HomeController.js"></script>
+		<script src="js/controllers/ProfileController.js"></script>
 		
 		<!-- Services -->
 		<script src="js/services/servicesModule.js"></script>
-		<script src="js/controllers/PhotosDeliveryService.js"></script>
+		<script src="js/services/PhotosDeliveryService.js"></script>
 
 		<script src="js/main.js"></script>
 
 	</head>
 	<body ng-app="glinterion">
 		<div class="jumbotron">
-			
+			<div class="container">
+	            <div class="menu">
+	                <a href="#">Home</a>					    
+	                <a href="#">About</a>					    
+	                <a href="#">Contacts</a>					    
+				</div>
+			</div>
 		</div>
-		<!-- <div ng-view></div> -->
+		<div ng-view></div>
 	</body>
 </html>

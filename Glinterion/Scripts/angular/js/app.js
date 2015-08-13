@@ -5,24 +5,18 @@ angular.module("glinterion", [
         "glinterionServices"
     ])
     .config([
-        "$routeProvider", "$locationProvider",
+        "$routeProvider",
         config
     ]);
 
-function config($routeProvider, $locationProvider) {
+function config($routeProvider) {
     $routeProvider.
         when("/home", {
             templateUrl: "partials/home.html",
             controller: "HomeController"
         }).
-        when("/profile/:userId", {
-            templateUrl: "partials/profile.html",
-            controller: "ProfileController"
-        }).
         otherwise({
             redirectTo: "/home"
         });
-    // allows to use natural URLs instead of unnatural hashbang URLs
-    //$locationProvider.html5Mode(true);
 }
 
