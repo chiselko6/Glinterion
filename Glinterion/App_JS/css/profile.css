@@ -16,6 +16,15 @@
 	color: green;
 }
 
+.profile-header {
+	display: table;
+}
+
+.gallery {
+	margin-top: 30px;
+	display: table;
+}
+
 .gallery-photo--wrapper {
 	display: inline-block;
 	width: 100px;

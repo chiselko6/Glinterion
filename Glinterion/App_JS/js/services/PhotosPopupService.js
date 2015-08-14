@@ -7,7 +7,7 @@ PhotosPopupService.$inject = [
 function PhotosPopupService($timeout) {
 	return function($scope, photos) {
 		$scope.$watch(photos, function (newValue, oldValue) {
-			$timeout(function() {
+			// $timeout(function() {
 				// Initialize popup as usual
 				$(".gallery-photo-link").magnificPopup({ 
 					type: 'image',
@@ -50,7 +50,7 @@ function PhotosPopupService($timeout) {
 					}
 
 				});
-			});
+			// });
 		});
 		
 	}

@@ -16,7 +16,7 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
 	profile.user.Id = $routeParams.userId;
 	profile.user.photos = PhotosDelivery(1, 9).query();
 
-	// profile.galleryPhotoLinkClass = ".gallery-photo-link";
+	// profile.galleryPhotoLinkClass = "gallery-photo-link";
 
 	profile.user.photos.$promise.then(function(photos) {
 		var prefix = "http://" + location.host + "/";
