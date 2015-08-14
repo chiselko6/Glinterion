@@ -1,6 +1,5 @@
 <div ng-controller="ProfileController as profile">
-	
-	<div class="col-md-offset-1">
+
 		<div class="avatar">
 			<img ng-src="{{profile.user.AvatarSrc}}">
 		</div>
@@ -19,11 +18,13 @@
 			</div>
 		</div>
 		<div class="gallery">
-			<div ng-repeat="photo in profile.user.photos">
-				<img ng-src="{{profile.tempSrc}}">
-				{{profile.tempSrc}}
+			<div ng-repeat="photo in profile.user.photos" class="gallery-photo--wrapper" title="gcd">
+				<a ng-href="{{photo.SrcOriginal}}" class="gallery-photo-link" title="gcd">
+					<img ng-src="{{photo.SrcPreview}}" class="gallery-photo" title="main">
+				</a>	
 			</div>
 		</div>
-	</div>
+	
 
+<script src="js/jquery.magnific-popup.js"></script> 
 </div>

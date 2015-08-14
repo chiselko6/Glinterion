@@ -6,6 +6,10 @@
 
         <link rel="stylesheet" href="../.bin/bower_components/bootstrap/dist/css/bootstrap.css">
 		<link rel="stylesheet" href="css/profile.css">
+		<link rel="stylesheet" href="css/magnific-popup.css"> 
+		
+		
+		<script src="../.bin/bower_components/jquery/dist/jquery.js"></script>
 
 		<script src="../.bin/bower_components/angular/angular.js"></script>
         <script src="../.bin/bower_components/angular-resource/angular-resource.js"></script>
@@ -19,12 +23,15 @@
 		<!-- Services -->
 		<script src="js/services/servicesModule.js"></script>
 		<script src="js/services/PhotosDeliveryService.js"></script>
-
+		
+		<!-- Directives -->
+		<script src="js/directives/directivesModule.js"></script>
+		
 		<script src="js/main.js"></script>
 
 	</head>
 	<body ng-app="glinterion">
-		<nav class="navbar navbar-inverse navbar-fixed-top">
+<!-- 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -41,9 +48,13 @@
 						<li><a href="#about">About</a></li>
 						<li><a href="#contact">Contact</a></li>
 					</ul>
-				</div><!--/.nav-collapse -->
+				</div>
 			</div>
 		</nav>
-		<div ng-view></div>
+ -->		
+ 		<div class="container">
+			<div ng-view></div>
+		</div>
+	
 	</body>
 </html>

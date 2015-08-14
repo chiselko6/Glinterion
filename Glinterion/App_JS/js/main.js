@@ -2,7 +2,8 @@ angular.module("glinterion", [
         "ngRoute",
         "ngResource",
         "glinterionControllers",
-        "glinterionServices"
+        "glinterionServices",
+        "glinterionDirectives"
     ])
     .config([
         "$routeProvider", "$compileProvider",

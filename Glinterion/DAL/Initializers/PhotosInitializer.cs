@@ -13,7 +13,7 @@ namespace Glinterion.DAL.Initializers
     {
         protected override void Seed(PhotosContext context)
         {
-            string src = @"images/";
+            string src = @"images\";
                 
             var photos = new List<Photo>
             {
