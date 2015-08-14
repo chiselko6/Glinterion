@@ -26,7 +26,12 @@ namespace Glinterion.Controllers
         // GET: api/Photos/
         public IQueryable<Photo> GetPhotos(int startId, int endId)
         {
-            return db.Photos.Skip(startId - 1).Take(endId - startId + 1);
+            if (endId < startId)
+                return null;
+            var photos = db.Photos;
+            if (photos.Count() < startId)
+                return null;
+            return photos.OrderBy(photo => photo.ID).Skip(startId - 1).Take(endId - startId + 1);
         }
 
             // GET: api/Photos/5

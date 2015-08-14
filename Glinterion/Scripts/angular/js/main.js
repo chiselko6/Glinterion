@@ -5,11 +5,11 @@ angular.module("glinterion", [
         "glinterionServices"
     ])
     .config([
-        "$routeProvider", "$locationProvider",
+        "$routeProvider", "$compileProvider",
         config
     ]);
 
-function config($routeProvider, $locationProvider) {
+function config($routeProvider, $compileProvider) {
     $routeProvider.
         when("/home", {
             templateUrl: "partials/home.html",
@@ -22,6 +22,8 @@ function config($routeProvider, $locationProvider) {
         otherwise({
             redirectTo: "/home"
         });
+    $compileProvider.imgSrcSanitizationWhitelist = /^\s*(https?|ftp|file|blob):|data:image\//;
+
     // allows to use natural URLs instead of unnatural hashbang URLs
     //$locationProvider.html5Mode(true);
 }

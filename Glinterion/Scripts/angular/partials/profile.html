@@ -20,7 +20,8 @@
 		</div>
 		<div class="gallery">
 			<div ng-repeat="photo in profile.user.photos">
-				<img ng-src="{{photo.SrcPreview}}">
+				<img ng-src="{{profile.tempSrc}}">
+				{{profile.tempSrc}}
 			</div>
 		</div>
 	</div>
