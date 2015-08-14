@@ -14,7 +14,7 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
 	profile.user.login = "chiselko6";
 	profile.user.accountType = "Simple";
 	profile.user.Id = $routeParams.userId;
-	profile.user.photos = PhotosDelivery.query();
+	profile.user.photos = PhotosDelivery(1, 9).query();
 
 	// profile.galleryPhotoLinkClass = ".gallery-photo-link";
 
