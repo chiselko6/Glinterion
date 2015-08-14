@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="description" content="Simple photohosting">
+		<title>Glinterion</title> 
+
+        <link rel="stylesheet" href="../.bin/bower_components/bootstrap/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="css/profile.css">
+
+		<script src="../.bin/bower_components/angular/angular.js"></script>
+        <script src="../.bin/bower_components/angular-resource/angular-resource.js"></script>
+        <script src="../.bin/bower_components/angular-route/angular-route.js"></script>
+		
+		<!-- Controllers -->
+		<script src="js/controllers/controllersModule.js"></script>
+		<script src="js/controllers/HomeController.js"></script>
+		<script src="js/controllers/ProfileController.js"></script>
+		
+		<!-- Services -->
+		<script src="js/services/servicesModule.js"></script>
+		<script src="js/services/PhotosDeliveryService.js"></script>
+
+		<script src="js/main.js"></script>
+
+	</head>
+	<body ng-app="glinterion">
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Glinterion</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="#">Home</a></li>
+						<li><a href="#about">About</a></li>
+						<li><a href="#contact">Contact</a></li>
+					</ul>
+				</div><!--/.nav-collapse -->
+			</div>
+		</nav>
+		<div ng-view></div>
+	</body>
+</html>

@@ -14,7 +14,6 @@ namespace Glinterion.DAL.Initializers
         protected override void Seed(PhotosContext context)
         {
             string src = @"images/";
-            string t = Path.GetFullPath(src);
                 
             var photos = new List<Photo>
             {

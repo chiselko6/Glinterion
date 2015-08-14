@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Mvc;
 using Glinterion.DAL;
 using Glinterion.Models;
 
@@ -82,10 +84,37 @@ namespace Glinterion.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        //[System.Web.Http.HttpPost]
+        //public JsonResult UploadFile()
+        //{
+        //    string Message, fileName;
+        //    Message = fileName = string.Empty;
+        //    bool flag = false;
+        //    Request.
+        //    if (Request.Files != null)
+        //    {
+        //        var file = Request.Files[0];
+        //        fileName = file.FileName;
+        //        try
+        //        {
+        //            file.SaveAs(Path.Combine(Server.MapPath("~/Images"), fileName));
+        //            Message = "File uploaded";
+        //            flag = true;
+        //        }
+        //        catch (Exception)
+        //        {
+        //            Message = "File upload failed! Please try again";
+        //        }
+
+        //    }
+        //    return new JsonResult { Data = new { Message = Message, Status = flag } };
+        //}
+
         // POST: api/Photos
         [ResponseType(typeof(Photo))]
         public IHttpActionResult PostPhoto(Photo photo)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
