@@ -101,6 +101,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".bin\bower_components\angular-file-upload\.gitignore" />
+    <Content Include=".bin\bower_components\angular-file-upload\dist\angular-file-upload.min.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\gulpfile.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\license.txt" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\directives\FileDrop.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\directives\FileOver.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\directives\FileSelect.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\index.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\services\FileDirective.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\services\FileDrop.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\services\FileItem.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\services\FileLikeObject.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\services\FileOver.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\services\FileSelect.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\services\FileUploader.js" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\values\options.js" />
     <Content Include=".bin\bower_components\angular-resource\angular-resource.js" />
     <Content Include=".bin\bower_components\angular-resource\angular-resource.min.js" />
     <Content Include=".bin\bower_components\angular-resource\index.js" />
@@ -374,6 +390,13 @@
     <Content Include=".bin\bower_components\jquery\bower.json" />
     <Content Include=".bin\bower_components\jquery\dist\jquery.min.map" />
     <Content Include=".bin\bower_components\jquery\src\sizzle\dist\sizzle.min.map" />
+    <Content Include=".bin\bower_components\angular-file-upload\.bower.json" />
+    <Content Include=".bin\bower_components\angular-file-upload\.jshintrc" />
+    <Content Include=".bin\bower_components\angular-file-upload\bower.json" />
+    <Content Include=".bin\bower_components\angular-file-upload\dist\angular-file-upload.min.js.map" />
+    <Content Include=".bin\bower_components\angular-file-upload\package.json" />
+    <Content Include=".bin\bower_components\angular-file-upload\README.md" />
+    <Content Include=".bin\bower_components\angular-file-upload\src\config.json" />
     <None Include=".bin\git.cmd" />
     <None Include=".bin\node.cmd" />
     <Content Include="App_JS\js\controllers\ProfileController.js" />
@@ -392,6 +415,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ImageUpload.cs" />
     <Compile Include="Models\Photo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

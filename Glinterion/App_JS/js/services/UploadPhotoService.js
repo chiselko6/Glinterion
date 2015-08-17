@@ -8,7 +8,7 @@ UploadPhotoService.$inject = [
 function UploadPhotoService() {
 
     var serv = {};
-    serv.UploadFile = function (file) {
+    serv.uploadFile = function (file) {
         var formData = new FormData();
         formData.append("file", file);
   

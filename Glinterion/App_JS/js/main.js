@@ -3,7 +3,8 @@ angular.module("glinterion", [
         "ngResource",
         "glinterionControllers",
         "glinterionServices",
-        "glinterionDirectives"
+        "glinterionDirectives",
+        "angularFileUpload"
     ])
     .config([
         "$routeProvider", "$compileProvider",

@@ -7,11 +7,15 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using Glinterion.DAL;
 using Glinterion.Models;
+using Newtonsoft.Json;
 
 namespace Glinterion.Controllers
 {
@@ -36,7 +40,7 @@ namespace Glinterion.Controllers
             return photos.OrderBy(photo => photo.ID).Skip(startId - 1).Take(endId - startId + 1);
         }
 
-            // GET: api/Photos/5
+        // GET: api/Photos/5
         [ResponseType(typeof(Photo))]
         public IHttpActionResult GetPhoto(int id)
         {
@@ -84,35 +88,51 @@ namespace Glinterion.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        //[System.Web.Http.HttpPost]
-        //public JsonResult UploadFile()
-        //{
-        //    string Message, fileName;
-        //    Message = fileName = string.Empty;
-        //    bool flag = false;
-        //    Request.
-        //    if (Request.Files != null)
-        //    {
-        //        var file = Request.Files[0];
-        //        fileName = file.FileName;
-        //        try
-        //        {
-        //            file.SaveAs(Path.Combine(Server.MapPath("~/Images"), fileName));
-        //            Message = "File uploaded";
-        //            flag = true;
-        //        }
-        //        catch (Exception)
-        //        {
-        //            Message = "File upload failed! Please try again";
-        //        }
+        [System.Web.Http.HttpPost]
+        public JsonResult PostPhoto(HttpPostedFileBase upload, Photo photo)
+        {
+            string Message, fileName, actualFileName;
+            Message = fileName = actualFileName = string.Empty;
+            //bool flag = false;
+            //if (Request.Files != null)
+            //{
+            //    var file = Request.Files[0];
+            //    actualFileName = file.FileName;
+            //    fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+            //    int size = file.ContentLength;
 
-        //    }
-        //    return new JsonResult { Data = new { Message = Message, Status = flag } };
-        //}
+            //    try
+            //    {
+            //        file.SaveAs(Path.Combine(Server.MapPath("~/UploadedFiles"), fileName));
+
+            //        UploadedFile f = new UploadedFile
+            //        {
+            //            FileName = actualFileName,
+            //            FilePath = fileName,
+            //            Description = description,
+            //            FileSize = size
+            //        };
+            //        using (MyDatabaseEntities dc = new MyDatabaseEntities())
+            //        {
+            //            dc.UploadedFiles.Add(f);
+            //            dc.SaveChanges();
+            //            Message = "File uploaded successfully";
+            //            flag = true;
+            //        }
+            //    }
+            //    catch (Exception)
+            //    {
+            //        Message = "File upload failed! Please try again";
+            //    }
+
+            //}
+            return new JsonResult { Data = new { Message = Message } };
+
+        }
 
         // POST: api/Photos
-        [ResponseType(typeof(Photo))]
-        public IHttpActionResult PostPhoto(Photo photo)
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult PostPhoto(HttpPostedFileBase upload)
         {
 
             if (!ModelState.IsValid)
@@ -120,11 +140,117 @@ namespace Glinterion.Controllers
                 return BadRequest(ModelState);
             }
 
+            var id = db.Photos.Count() + 1;
+            Photo photo;
+            if (upload != null)
+            {
+                string srcOriginal = @"images/user_chiselko6/original/img" + id + Path.GetExtension(upload.FileName);
+                string srcPreview = @"images/user_chiselko6/preview/img" + id + Path.GetExtension(upload.FileName);
+                var rating = 5.0;
+                var description = "temp";
+                var size = 1.4;
+                photo = new Photo
+                {
+                    Description = description,
+                    ID = id,
+                    Rating = rating,
+                    Size = size,
+                    SrcOriginal = srcOriginal,
+                    SrcPreview = srcPreview
+                };
+                // file is uploaded
+                upload.SaveAs(srcOriginal);
+                upload.SaveAs(srcPreview);
+            }
+            else
+            {
+                return null;
+            }
+
+
             db.Photos.Add(photo);
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = photo.ID }, photo);
         }
+
+        #region PostPhoto
+
+        [System.Web.Http.HttpPost] // This is from System.Web.Http, and not from System.Web.Mvc
+        public async Task<HttpResponseMessage> Upload()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                this.Request.CreateResponse(HttpStatusCode.UnsupportedMediaType);
+            }
+
+            var provider = GetMultipartProvider();
+            var result = await Request.Content.ReadAsMultipartAsync(provider);
+
+            // On upload, files are given a generic name like "BodyPart_26d6abe1-3ae1-416a-9429-b35f15e6e5d5"
+            // so this is how you can get the original file name
+            var originalFileName = GetDeserializedFileName(result.FileData.First());
+
+            // uploadedFileInfo object will give you some additional stuff like file length,
+            // creation time, directory name, a few filesystem methods etc..
+            var uploadedFileInfo = new FileInfo(result.FileData.First().LocalFileName);
+
+            // Remove this line as well as GetFormData method if you're not
+            // sending any form data with your upload request
+            var fileUploadObj = GetFormData<UploadDataModel>(result);
+
+            // Through the request response you can return an object to the Angular controller
+            // You will be able to access this in the .success callback through its data attribute
+            // If you want to send something to the .error callback, use the HttpStatusCode.BadRequest instead
+            var returnData = "ReturnTest";
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { returnData });
+        }
+
+        // You could extract these two private methods to a separate utility class since
+        // they do not really belong to a controller class but that is up to you
+        private MultipartFormDataStreamProvider GetMultipartProvider()
+        {
+            // IMPORTANT: replace "(tilde)" with the real tilde character
+            // (our editor doesn't allow it, so I just wrote "(tilde)" instead)
+            var uploadFolder = "~/images/user_chiselko6/original"; // you could put this to web.config
+            var root = HttpContext.Current.Server.MapPath(uploadFolder);
+            Directory.CreateDirectory(root);
+            return new MultipartFormDataStreamProvider(root);
+        }
+
+        // Extracts Request FormatData as a strongly typed model
+        private object GetFormData<T>(MultipartFormDataStreamProvider result)
+        {
+            if (result.FormData.HasKeys())
+            {
+                var unescapedFormData = Uri.UnescapeDataString(result.FormData
+                    .GetValues(0).FirstOrDefault() ?? String.Empty);
+                if (!String.IsNullOrEmpty(unescapedFormData))
+                    return JsonConvert.DeserializeObject<T>(unescapedFormData);
+            }
+
+            return null;
+        }
+
+        private string GetDeserializedFileName(MultipartFileData fileData)
+        {
+            var fileName = GetFileName(fileData);
+            return JsonConvert.DeserializeObject(fileName).ToString();
+        }
+
+        public string GetFileName(MultipartFileData fileData)
+        {
+            return fileData.Headers.ContentDisposition.FileName;
+        }
+
+
+        public class UploadDataModel
+        {
+            public string testString1 { get; set; }
+            public string testString2 { get; set; }
+        }
+
+#endregion
 
         // DELETE: api/Photos/5
         [ResponseType(typeof(Photo))]
@@ -156,4 +282,5 @@ namespace Glinterion.Controllers
             return db.Photos.Count(e => e.ID == id) > 0;
         }
     }
+
 }
