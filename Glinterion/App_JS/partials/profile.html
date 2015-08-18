@@ -19,7 +19,7 @@
 		</div>
 		<div class="add-photo-section">
 			<!-- <input type="file" nv-file-select uploader="profile.uploader" multiple/><br/> -->
-			<input type="file" nv-file-select="" uploader="profile.uploader" multiple  /><br/>
+			<input type="file" nv-file-select="" uploader="profile.uploader" multiple enctype="multipart/form-data" /><br/>
 			<table class="table">
                 <thead>
                     <tr>
@@ -54,7 +54,7 @@
                             <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
                         </td>
                         <td nowrap>
-                            <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                            <button type="button" class="btn btn-success btn-xs" ng-click="profile.save(item); item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
                                 <span class="glyphicon glyphicon-upload"></span> Upload
                             </button>
                             <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
@@ -67,6 +67,17 @@
                     </tr>
                 </tbody>
             </table>
+            <div>
+                <button type="button" class="btn btn-success btn-s" ng-click="profile.uploader.uploadAll()" ng-disabled="!profile.uploader.getNotUploadedItems().length">
+                    <span class="glyphicon glyphicon-upload"></span> Upload all
+                </button>
+                <button type="button" class="btn btn-warning btn-s" ng-click="profile.uploader.cancelAll()" ng-disabled="!profile.uploader.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                </button>
+                <button type="button" class="btn btn-danger btn-s" ng-click="profile.uploader.clearQueue()" ng-disabled="!profile.uploader.queue.length">
+                    <span class="glyphicon glyphicon-trash"></span> Remove all
+                </button>
+            </div>
 			<!-- <ul>
 	            <li ng-repeat="item in profile.uploader.queue">
 	                Name: <span ng-bind="item.file.name"></span><br/>

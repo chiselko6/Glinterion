@@ -5,10 +5,13 @@ ProfileController.$inject = [
 	"$routeParams", 
 	"PhotosDeliveryService",
 	"PhotosPopupService",
-	"FileUploader"
+	"formDataObject",
+	"FileUploader",
+	"$http",
+	"$timeout"
 ];
 
-function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupService, FileUploader, $http, $timeout, $upload) {
+function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupService, formDataObject, FileUploader, $http, $timeout) {
 	var profile = this;
 
 	profile.user = {};
@@ -18,8 +21,7 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
 	profile.user.photos = PhotosDelivery(1, 9).query();
 	profile.uploader = new FileUploader({
 		url: "../../api/photos/upload",
-		queueLimit: 5,
-		formData: [1, 2, 3]
+		queueLimit: 5
 	});
 
 	profile.uploader.filters.push({
@@ -29,6 +31,11 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
             return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
         }
     });
+
+    profile.uploader.onBeforeUploadItem = function (item) {
+	    item.formData.push({description : "temp"});
+	    item.formData.push({rating: 4.0});
+	};
 
 	// profile.galleryPhotoLinkClass = "gallery-photo-link";
 
@@ -43,6 +50,9 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
 		PhotosPopupService($scope, photos);
 	});
 
+	profile.save = function(item) {
+		console.log(item);
+	}
 
 	// profile.upload = [];
  //    profile.fileUploadObj = { testString1: "Test string 1", testString2: "Test string 2" };
