@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,11 +31,13 @@ namespace Glinterion.Controllers
     {
         private IPhotoRepository photosDb;
         private IUserRepository usersDb;
+        private IImageRepository imageRepository;
 
-        public PhotosController(IPhotoRepository photoRepository, IUserRepository userRepository)
+        public PhotosController(IPhotoRepository photoRepository, IUserRepository userRepository, IImageRepository imageRepository)
         {
             photosDb = photoRepository;
             usersDb = userRepository;
+            this.imageRepository = imageRepository;
         }
 
         // GET: api/Photos
@@ -102,70 +105,21 @@ namespace Glinterion.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        public class UploadDataModel
-        {
-            public string testString1 { get; set; }
-            public string testString2 { get; set; }
-        }
-
-        [HttpPost] // This is from System.Web.Http, and not from System.Web.Mvc
-        public async Task<HttpResponseMessage> Upload(string description = "", double rating = 3.0)
+        [HttpPost]// This is from System.Web.Http, and not from System.Web.Mvc
+        public async Task<HttpResponseMessage> Upload()
         {
             if (!Request.Content.IsMimeMultipartContent())
             {
                 this.Request.CreateResponse(HttpStatusCode.UnsupportedMediaType);
             }
-
+            var provider = new MultipartMemoryStreamProvider();
+            await Request.Content.ReadAsMultipartAsync(provider);
+            var userLogin = "RomanFrom710";
             try
             {
-                var provider = new MultipartMemoryStreamProvider();
-                await Request.Content.ReadAsMultipartAsync(provider);
-                var userLogin = "RomanFrom710";
-                var allPhotosCount = photosDb.GetPhotos().Count();
-                var userId = usersDb.GetUsers().First(user => user.Login == userLogin).ID;
-                int photoId = photosDb.GetPhotos().Count(photo => photo.UserID == userId) + 1;
-                foreach (var file in provider.Contents)
-                {
-                    var dataStream = await file.ReadAsStreamAsync();
-                    byte[] bufferOriginal = new byte[dataStream.Length];
-                    await dataStream.ReadAsync(bufferOriginal, 0, (int)dataStream.Length);
-                    // TODO:
-                    var uploadFolderOriginal = "~/images/user_" + userLogin + "/original/";
-                    var uploadFolderPreview = "~/images/user_" + userLogin + "/preview/";
-                    var rootOriginal = HttpContext.Current.Server.MapPath(uploadFolderOriginal);
-                    var rootPreview = HttpContext.Current.Server.MapPath(uploadFolderPreview);
-                    Directory.CreateDirectory(rootOriginal);
-                    Directory.CreateDirectory(rootPreview);
-
-                    // TODO: convert to a smaller size
-                    byte[] bufferPreview = bufferOriginal;
-                    
-                    // TODO: get file extension
-                    rootOriginal += "img" + photoId + ".jpg";
-                    rootPreview += "img" + photoId + ".jpg";
-                    using (var stream = new FileStream(rootOriginal, FileMode.OpenOrCreate))
-                    {
-                        await stream.WriteAsync(bufferOriginal, 0, (int)bufferOriginal.Length);
-                    }
-                    using (var stream = new FileStream(rootPreview, FileMode.OpenOrCreate))
-                    {
-                        await stream.WriteAsync(bufferPreview, 0, (int)bufferPreview.Length);
-                    }
-                    var photo = new Photo
-                    {
-                        Description = "temp",
-                        ID = allPhotosCount + 1,
-                        UserID = userId,
-                        Rating = 4.0,
-                        Size = (double) bufferOriginal.Length / 1000000,
-                        SrcOriginal = rootOriginal,
-                        SrcPreview = rootPreview
-                    };
-                    photosDb.AddPhoto(photo);
-                    photoId++;
-                    // use the data stream to persist the data to the server (file system etc)
-                }
-                photosDb.Save();
+                string description = await provider.Contents[0].ReadAsStringAsync();
+                double rating = Double.Parse(await provider.Contents[1].ReadAsStringAsync());
+                imageRepository.Save(provider.Contents[2], userLogin, description, rating);
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent("Successful upload", Encoding.UTF8, "text/plain");
                 response.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(@"text/html");
@@ -175,9 +129,8 @@ namespace Glinterion.Controllers
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e.Message);
             }
-
         }
-        
+
         // You could extract these two private methods to a separate utility class since
         // they do not really belong to a controller class but that is up to you
         private MultipartFormDataStreamProvider GetMultipartProvider(string folder)

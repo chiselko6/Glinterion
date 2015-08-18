@@ -431,8 +431,10 @@
     <Compile Include="DAL\Contexts\UsersContext.cs" />
     <Compile Include="DAL\Initializers\PhotosInitializer.cs" />
     <Compile Include="DAL\Initializers\UsersInitializer.cs" />
+    <Compile Include="DAL\IRepository\IImageRepository.cs" />
     <Compile Include="DAL\IRepository\IPhotoRepository.cs" />
     <Compile Include="DAL\IRepository\IUserRepository.cs" />
+    <Compile Include="DAL\Repository\ImageRepository.cs" />
     <Compile Include="DAL\Repository\PhotoRepository.cs" />
     <Compile Include="DAL\Repository\UserRepository.cs" />
     <Compile Include="Global.asax.cs">

@@ -18,6 +18,7 @@ namespace Glinterion
             // e.g. container.RegisterType<ITestService, TestService>();
             container.RegisterType<IPhotoRepository, PhotoRepository>();
             container.RegisterType<IUserRepository, UserRepository>();
+            container.RegisterType<IImageRepository, ImageRepository>();
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }

@@ -20,7 +20,7 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
 	profile.user.Id = $routeParams.userId;
 	profile.user.photos = PhotosDelivery(1, 9).query();
 	profile.uploader = new FileUploader({
-		url: "../../api/photos/upload",
+		url: "../../api/photos/upload?description=temp",
 		queueLimit: 5
 	});
 
@@ -33,8 +33,7 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
     });
 
     profile.uploader.onBeforeUploadItem = function (item) {
-	    //item.formData.push({description : "temp"});
-	    //item.formData.push({rating: 4.0});
+	    item.formData.push({description : "temp", rating: 4.0});
 	};
 
 	// profile.galleryPhotoLinkClass = "gallery-photo-link";
