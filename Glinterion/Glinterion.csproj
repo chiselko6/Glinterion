@@ -410,14 +410,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
-    <Compile Include="Controllers\tempController.cs" />
     <Compile Include="DAL\Contexts\PhotosContext.cs" />
+    <Compile Include="DAL\Contexts\UsersContext.cs" />
     <Compile Include="DAL\Initializers\PhotosInitializer.cs" />
+    <Compile Include="DAL\Initializers\UsersInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ImageUpload.cs" />
     <Compile Include="Models\Photo.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="PhotoHelpers\PhotoConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -33,8 +33,8 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
     });
 
     profile.uploader.onBeforeUploadItem = function (item) {
-	    item.formData.push({description : "temp"});
-	    item.formData.push({rating: 4.0});
+	    //item.formData.push({description : "temp"});
+	    //item.formData.push({rating: 4.0});
 	};
 
 	// profile.galleryPhotoLinkClass = "gallery-photo-link";

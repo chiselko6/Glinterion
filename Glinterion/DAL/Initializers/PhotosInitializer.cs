@@ -20,6 +20,7 @@ namespace Glinterion.DAL.Initializers
                 new Photo
                 {
                     ID = 1,
+                    UserID = 1,
                     Description = "just a glass ball in sunset",
                     Rating = 5.0,
                     SrcPreview = src + @"user_chiselko6/preview/img1.jpg",
@@ -29,6 +30,7 @@ namespace Glinterion.DAL.Initializers
                 new Photo
                 {
                     ID = 2,
+                    UserID = 1,
                     Description = "white bears",
                     Rating = 4.9,
                     SrcPreview = src + @"user_chiselko6/preview/img2.jpg",
@@ -38,6 +40,7 @@ namespace Glinterion.DAL.Initializers
                 new Photo
                 {
                     ID = 3,
+                    UserID = 1,
                     Description = "envy wolves",
                     Rating = 4.8,
                     SrcPreview = src +  @"user_chiselko6/preview/img3.jpg",
@@ -47,6 +50,7 @@ namespace Glinterion.DAL.Initializers
                 new Photo
                 {
                     ID = 4,
+                    UserID = 1,
                     Description = "pretty kitten",
                     Rating = 5.0,
                     SrcPreview = src + @"user_chiselko6/preview/img4.jpg",
@@ -56,6 +60,7 @@ namespace Glinterion.DAL.Initializers
                 new Photo
                 {
                     ID = 5,
+                    UserID = 1,
                     Description = "love is...",
                     Rating = 5.0,
                     SrcPreview = src + @"user_chiselko6/preview/img5.jpg",
@@ -65,6 +70,7 @@ namespace Glinterion.DAL.Initializers
                 new Photo
                 {
                     ID = 6,
+                    UserID = 1,
                     Description = "just eye",
                     Rating = 5.0,
                     SrcPreview = src + @"user_chiselko6/preview/img6.jpg",
@@ -74,6 +80,7 @@ namespace Glinterion.DAL.Initializers
                 new Photo
                 {
                     ID = 7,
+                    UserID = 1,
                     Description = "pretty kittens",
                     Rating = 5.0,
                     SrcPreview = src + @"user_chiselko6/preview/img7.jpg",
@@ -83,6 +90,7 @@ namespace Glinterion.DAL.Initializers
                 new Photo
                 {
                     ID = 8,
+                    UserID = 1,
                     Description = "unbelivable rose",
                     Rating = 5.0,
                     SrcPreview = src + @"user_chiselko6/preview/img8.jpg",
@@ -92,6 +100,7 @@ namespace Glinterion.DAL.Initializers
                 new Photo
                 {
                     ID = 9,
+                    UserID = 1,
                     Description = "Abraham Lincoln",
                     Rating = 5.0,
                     SrcPreview = src + @"user_chiselko6/preview/img9.jpg",
@@ -101,6 +110,7 @@ namespace Glinterion.DAL.Initializers
                 new Photo
                 {
                     ID = 10,
+                    UserID = 1,
                     Description = "'moonset'",
                     Rating = 5.0,
                     SrcPreview = src + @"user_chiselko6/preview/img10.jpg",
@@ -110,6 +120,7 @@ namespace Glinterion.DAL.Initializers
                 new Photo
                 {
                     ID = 11,
+                    UserID = 1,
                     Description = "pretty monkey",
                     Rating = 5.0,
                     SrcPreview = src + @"user_chiselko6/preview/img11.jpg",

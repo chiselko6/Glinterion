@@ -19,5 +19,7 @@ namespace Glinterion.Models
 
         // in MB
         public double Size { get; set; }
+
+        public int UserID { get; set; }
     }
 }

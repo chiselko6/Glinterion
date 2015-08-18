@@ -23,6 +23,7 @@ namespace Glinterion
             RouteConfig.RegisterRoutes(RouteTable.Routes);        
     
             Database.SetInitializer(new PhotosInitializer());
+            Database.SetInitializer(new UsersInitializer());
         }
     }
 }
