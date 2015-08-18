@@ -18,6 +18,8 @@ using System.Web.Http.Description;
 using System.Web.UI.WebControls;
 using Glinterion.DAL;
 using Glinterion.DAL.Contexts;
+using Glinterion.DAL.IRepository;
+using Glinterion.DAL.Repository;
 using Glinterion.Models;
 using Glinterion.PhotoHelpers;
 using Newtonsoft.Json;
@@ -26,13 +28,19 @@ namespace Glinterion.Controllers
 {
     public class PhotosController : ApiController
     {
-        private PhotosContext photosDb = new PhotosContext();
-        private UsersContext usersDb = new UsersContext();
+        private IPhotoRepository photosDb;
+        private IUserRepository usersDb;
+
+        public PhotosController()
+        {
+            photosDb = new PhotoRepository(new PhotosContext());
+            usersDb = new UserRepository(new UsersContext());
+        }
 
         // GET: api/Photos
         public IQueryable<Photo> GetPhotos()
         {
-            return photosDb.Photos;
+            return photosDb.GetPhotos();
         }
 
         // GET: api/Photos/
@@ -40,7 +48,7 @@ namespace Glinterion.Controllers
         {
             if (endId < startId)
                 return null;
-            var photos = photosDb.Photos;
+            var photos = photosDb.GetPhotos();
             if (photos.Count() < startId)
                 return null;
             return photos.OrderBy(photo => photo.ID).Skip(startId - 1).Take(endId - startId + 1);
@@ -50,7 +58,7 @@ namespace Glinterion.Controllers
         [ResponseType(typeof(Photo))]
         public IHttpActionResult GetPhoto(int id)
         {
-            Photo photo = photosDb.Photos.Find(id);
+            Photo photo = photosDb.GetPhotoById(id);
             if (photo == null)
             {
                 return NotFound();
@@ -73,11 +81,11 @@ namespace Glinterion.Controllers
                 return BadRequest();
             }
 
-            photosDb.Entry(photo).State = EntityState.Modified;
+            photosDb.UpdatePhoto(photo);
 
             try
             {
-                photosDb.SaveChanges();
+                photosDb.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -113,9 +121,9 @@ namespace Glinterion.Controllers
                 var provider = new MultipartMemoryStreamProvider();
                 await Request.Content.ReadAsMultipartAsync(provider);
                 var userLogin = "RomanFrom710";
-                var allPhotosCount = photosDb.Photos.Count();
-                var userId = usersDb.Users.First(user => user.Login == userLogin).ID;
-                int photoId = photosDb.Photos.Count(photo => photo.UserID == userId) + 1;
+                var allPhotosCount = photosDb.GetPhotos().Count();
+                var userId = usersDb.GetUsers().First(user => user.Login == userLogin).ID;
+                int photoId = photosDb.GetPhotos().Count(photo => photo.UserID == userId) + 1;
                 foreach (var file in provider.Contents)
                 {
                     var dataStream = await file.ReadAsStreamAsync();
@@ -153,11 +161,11 @@ namespace Glinterion.Controllers
                         SrcOriginal = rootOriginal,
                         SrcPreview = rootPreview
                     };
-                    photosDb.Photos.Add(photo);
+                    photosDb.AddPhoto(photo);
                     photoId++;
                     // use the data stream to persist the data to the server (file system etc)
                 }
-                photosDb.SaveChanges();
+                photosDb.Save();
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent("Successful upload", Encoding.UTF8, "text/plain");
                 response.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(@"text/html");
@@ -218,14 +226,14 @@ namespace Glinterion.Controllers
         [ResponseType(typeof(Photo))]
         public IHttpActionResult DeletePhoto(int id)
         {
-            Photo photo = photosDb.Photos.Find(id);
+            Photo photo = photosDb.GetPhotoById(id);
             if (photo == null)
             {
                 return NotFound();
             }
 
-            photosDb.Photos.Remove(photo);
-            photosDb.SaveChanges();
+            photosDb.DeletePhoto(id);
+            photosDb.Save();
 
             return Ok(photo);
         }
@@ -241,7 +249,7 @@ namespace Glinterion.Controllers
 
         private bool PhotoExists(int id)
         {
-            return photosDb.Photos.Count(e => e.ID == id) > 0;
+            return photosDb.GetPhotos().Count(e => e.ID == id) > 0;
         }
     }
 
