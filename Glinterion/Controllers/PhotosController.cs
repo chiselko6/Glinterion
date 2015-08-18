@@ -31,10 +31,10 @@ namespace Glinterion.Controllers
         private IPhotoRepository photosDb;
         private IUserRepository usersDb;
 
-        public PhotosController()
+        public PhotosController(IPhotoRepository photoRepository, IUserRepository userRepository)
         {
-            photosDb = new PhotoRepository(new PhotosContext());
-            usersDb = new UserRepository(new UsersContext());
+            photosDb = photoRepository;
+            usersDb = userRepository;
         }
 
         // GET: api/Photos
