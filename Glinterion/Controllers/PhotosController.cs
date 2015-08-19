@@ -110,7 +110,7 @@ namespace Glinterion.Controllers
         {
             if (!Request.Content.IsMimeMultipartContent())
             {
-                this.Request.CreateResponse(HttpStatusCode.UnsupportedMediaType);
+                Request.CreateResponse(HttpStatusCode.UnsupportedMediaType);
             }
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);

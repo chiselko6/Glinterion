@@ -7,11 +7,10 @@ ProfileController.$inject = [
 	"PhotosPopupService",
 	"formDataObject",
 	"FileUploader",
-	"$http",
 	"$timeout"
 ];
 
-function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupService, formDataObject, FileUploader, $http, $timeout) {
+function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupService, formDataObject, FileUploader, $timeout) {
 	var profile = this;
 
 	profile.user = {};
@@ -20,7 +19,7 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
 	profile.user.Id = $routeParams.userId;
 	profile.user.photos = PhotosDelivery(1, 9).query();
 	profile.uploader = new FileUploader({
-		url: "../../api/photos/upload?description=temp",
+		url: "../../api/photos/upload",
 		queueLimit: 5
 	});
 
@@ -32,8 +31,29 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
         }
     });
 
+    profile.uploader.onAfterAddingFile = function(item) {
+    	$timeout(function() {
+	    	$(".rating").rating({
+				stars: 5,
+				min: 0,
+				max: 5,
+				step: 1,
+				"size": "sm"
+			});
+	    }, 100);
+    }
+
     profile.uploader.onBeforeUploadItem = function (item) {
-	    item.formData.push({description : "temp", rating: 4.0});
+    	if (!item.description || !item.rating) {
+			item.cancel();
+			return;
+		}
+		if (isNaN(+item.rating)) {
+			// profile.uploader.cancelItem(item);
+			item.cancel();
+			return;
+		}
+	    item.formData.push({description : item.description, rating: item.rating});
 	};
 
 	// profile.galleryPhotoLinkClass = "gallery-photo-link";
@@ -48,38 +68,6 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
 		// we don't pass additional parameter as 'gallery-photo-link' to <a> because ng-class doesn't have binding to property
 		PhotosPopupService($scope, photos);
 	});
-
-	profile.save = function(item) {
-		console.log(item);
-	}
-
-	// profile.upload = [];
- //    profile.fileUploadObj = { testString1: "Test string 1", testString2: "Test string 2" };
-
- //    profile.onFileSelect = function ($files) {
- //    	console.log(52);
- //        //$files: an array of files selected, each file has name, size, and type.
- //        for (var i = 0; i < $files.length; i++) {
- //            var $file = $files[i];
- //            (function (index) {
- //                profile.upload[index] = $upload.upload({
- //                    url: "../../api/photos/upload", // webapi url
- //                    method: "POST",
- //                    data: { fileUploadObj: profile.fileUploadObj },
- //                    file: $file
- //                }).progress(function (evt) {
- //                    // get upload percentage
- //                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
- //                }).success(function (data, status, headers, config) {
- //                    // file is uploaded successfully
- //                    console.log(data);
- //                }).error(function (data, status, headers, config) {
- //                    // file failed to upload
- //                    console.log(data);
- //                });
- //            })(i);
- //        }
- //    }
 
     profile.abortUpload = function (index) {
         profile.upload[index].abort();

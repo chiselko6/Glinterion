@@ -39,22 +39,22 @@
                             <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
                             <!--auto width-->
                             <div ng-show="profile.uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
-                            <!--fixed width and height -->
-                            <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
+                            <!-- <label ng-attr-for="{{item.$index + 'description'}}" class="sr-only">Description</label> -->
+                            <input type="text" ng-model="item.description" ng-attr-id="{{item.$index + 'description'}}" class="form-control"
+                            	placeholder="Description">
+                            </br>
+                            <input type="number" ng-model="item.rating" 
+                            	placeholder="Rating" max="5" min="0" step="1">
                         </td>
                         <td ng-show="profile.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-<!--                         <td ng-show="profile.uploader.isHTML5">
-                            <div class="progress" style="margin-bottom: 0;">
-                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                            </div>
-                        </td> -->
                         <td class="text-center">
                             <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
                             <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
                             <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
                         </td>
                         <td nowrap>
-                            <button type="button" class="btn btn-success btn-xs" ng-click="profile.save(item); item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+
+                            <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || isNaN(+item.rating) || !item.description">
                                 <span class="glyphicon glyphicon-upload"></span> Upload
                             </button>
                             <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
@@ -74,7 +74,7 @@
                 <button type="button" class="btn btn-warning btn-s" ng-click="profile.uploader.cancelAll()" ng-disabled="!profile.uploader.isUploading">
                     <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
                 </button>
-                <button type="button" class="btn btn-danger btn-s" ng-click="profile.uploader.clearQueue()" ng-disabled="!profile.uploader.queue.length">
+                <button type="button" class="btn btn-danger btn-s" ng-click="profile.uploader.clearQueue()" ng-disabled="!profile.queue.length">
                     <span class="glyphicon glyphicon-trash"></span> Remove all
                 </button>
             </div>
@@ -96,4 +96,7 @@
 		</div>
 	</div>
 <script src="js/jquery.magnific-popup.js"></script> 
+<!-- Star-rating plugin -->
+<script src="../../.bin/bower_components/bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>
+<script src="js/profile.js"></script>
 </div>

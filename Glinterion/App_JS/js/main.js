@@ -29,4 +29,3 @@ function config($routeProvider, $compileProvider) {
     // allows to use natural URLs instead of unnatural hashbang URLs
     //$locationProvider.html5Mode(true);
 }
-

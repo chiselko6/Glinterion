@@ -61,29 +61,35 @@ namespace Glinterion.PhotoHelpers
             return ReturnedThumbnail;
         }
 
-        // Resize a Bitmap  
-        private static System.Drawing.Bitmap ResizeImage(System.Drawing.Bitmap image, int width, int height)
+        public static byte[] Resize(byte[] image, int newWidth, int newHeight)
         {
-            System.Drawing.Bitmap resizedImage = new System.Drawing.Bitmap(width, height);
-            using (System.Drawing.Graphics gfx = System.Drawing.Graphics.FromImage(resizedImage))
+            var newImage = byteArrayToImage(image);
+            return imageToByteArray(ResizeImage(newImage as Bitmap, newWidth, newHeight));
+        }
+
+        // Resize a Bitmap  
+        private static Bitmap ResizeImage(Bitmap image, int width, int height)
+        {
+            Bitmap resizedImage = new Bitmap(width, height);
+            using (Graphics gfx = Graphics.FromImage(resizedImage))
             {
-                gfx.DrawImage(image, new System.Drawing.Rectangle(0, 0, width, height),
-                    new System.Drawing.Rectangle(0, 0, image.Width, image.Height), System.Drawing.GraphicsUnit.Pixel);
+                gfx.DrawImage(image, new Rectangle(0, 0, width, height),
+                    new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
             }
             return resizedImage;
         }
 
-        public byte[] imageToByteArray(System.Drawing.Image imageIn)
+        private static byte[] imageToByteArray(Image imageIn)
         {
             MemoryStream ms = new MemoryStream();
-            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
             return ms.ToArray();
         }
 
-        public System.Drawing.Image byteArrayToImage(byte[] byteArrayIn)
+        private static Image byteArrayToImage(byte[] byteArrayIn)
         {
             MemoryStream ms = new MemoryStream(byteArrayIn);
-            System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
+            Image returnImage = Image.FromStream(ms);
             return returnImage;
         }
 

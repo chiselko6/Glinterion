@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Glinterion.DAL.IRepository;
 using Glinterion.Models;
+using Glinterion.PhotoHelpers;
 
 namespace Glinterion.DAL.Repository
 {
@@ -37,8 +38,7 @@ namespace Glinterion.DAL.Repository
             Directory.CreateDirectory(rootOriginal);
             Directory.CreateDirectory(rootPreview);
 
-            // TODO: convert to a smaller size
-            byte[] bufferPreview = bufferOriginal;
+            byte[] bufferPreview = PhotoConverter.Resize(bufferOriginal, 100, 100);
 
             // TODO: get file extension
             rootOriginal += "img" + photoNumber + ".jpg";
@@ -57,7 +57,7 @@ namespace Glinterion.DAL.Repository
                 Description = photoDescription,
                 ID = allPhotosCount + 1,
                 UserID = userId,
-                Size = (double)dataStream.Length / 1000000,
+                Size = (double)dataStream.Length / 1024 / 1024,
                 Rating = rating,
                 SrcOriginal = rootOriginal,
                 SrcPreview = rootPreview
