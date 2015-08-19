@@ -9,13 +9,16 @@
 					Hello, {{profile.user.login}}
 				</div>
 			</div>
+			</br>
 			<div class="user--account">
 				You have <span class="account-type">{{profile.user.accountType}}</span> account
 			</div>
+			</br>
 			<div class="user--album-details">
 				Photos uploaded: {{profile.user.photosNumber}}
 				Size: {{profile.user.totalSize}}
 			</div>
+			</br>
 			<input type="file" nv-file-select uploader="profile.uploader" multiple enctype="multipart/form-data" /><br/>
 		</div>
 		<div class="add-photo-section" ng-show="profile.uploader.queue.length">
