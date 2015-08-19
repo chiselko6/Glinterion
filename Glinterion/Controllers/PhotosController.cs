@@ -47,17 +47,32 @@ namespace Glinterion.Controllers
         }
 
         // GET: api/Photos/
-        public IQueryable<Photo> GetPhotos(int startId, int endId)
+        //public IQueryable<Photo> GetPhotos(int startId, int endId)
+        //{
+        //    if (endId < startId)
+        //        return null;
+        //    var photos = photosDb.GetPhotos();
+        //    if (photos.Count() < startId)
+        //        return null;
+        //    return photos.OrderBy(photo => photo.ID).Skip(startId - 1).Take(endId - startId + 1);
+        //}
+
+        // GET: api/Photos
+        public IQueryable<Photo> GetPhotos(int pageNumber, int photosPerPage)
         {
-            if (endId < startId)
-                return null;
-            var photos = photosDb.GetPhotos();
-            if (photos.Count() < startId)
-                return null;
-            return photos.OrderBy(photo => photo.ID).Skip(startId - 1).Take(endId - startId + 1);
+            var photos = photosDb.GetPhotos().OrderBy(photo => photo.ID);
+            if (photos.Count() >= pageNumber*photosPerPage)
+            {
+                return photos.Skip((pageNumber - 1)*photosPerPage).Take(photosPerPage);
+            }
+            if (photos.Count() > (pageNumber - 1)*photosPerPage)
+            {
+                return photos.Skip((pageNumber - 1)*photosPerPage).Take(photos.Count() - (pageNumber - 1)*photosPerPage);
+            }
+            return null;
         }
 
-        // GET: api/Photos/5
+            // GET: api/Photos/5
         [ResponseType(typeof(Photo))]
         public IHttpActionResult GetPhoto(int id)
         {

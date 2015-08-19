@@ -13,9 +13,9 @@ angular.module("glinterionServices").factory("formDataObject", function() {
 PhotosDeliveryService.$inject = ["$resource"];
 
 function PhotosDeliveryService($resource) {
-    return function(startId, endId) {
-    	return $resource("../../api/photos", {startId: 1, endId: 1}, {
-        	query: { method: "GET", params: {startId: startId, endId: endId}, isArray: true }
+    return function(pageNumber, photosPerPage) {
+    	return $resource("../../api/photos", {pageNumber: 1, photosPerPage: 1}, {
+        	query: { method: "GET", params: {pageNumber: pageNumber, photosPerPage: photosPerPage}, isArray: true }
     	});
     }
 }
