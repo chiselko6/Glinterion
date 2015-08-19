@@ -28,6 +28,11 @@ namespace Glinterion.DAL.Repository
             return db.Users.Where(user => user.Role == role);
         }
 
+        public int GetUserID(string userLogin)
+        {
+            return db.Users.First(user => user.Login == userLogin).ID;
+        }
+
         public User GetUserById(int id)
         {
             return db.Users.Find(id);

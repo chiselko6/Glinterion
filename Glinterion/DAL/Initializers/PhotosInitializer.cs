@@ -9,7 +9,7 @@ using Glinterion.Models;
 
 namespace Glinterion.DAL.Initializers
 {
-    public class PhotosInitializer : DropCreateDatabaseAlways<PhotosContext>
+    public class PhotosInitializer : DropCreateDatabaseIfModelChanges<PhotosContext>
     {
         protected override void Seed(PhotosContext context)
         {

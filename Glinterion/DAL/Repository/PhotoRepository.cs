@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
+using Glinterion.DAL.Contexts;
+using Glinterion.DAL.IRepository;
 using Glinterion.Models;
 
 namespace Glinterion.DAL.Repository
@@ -10,15 +13,23 @@ namespace Glinterion.DAL.Repository
     public class PhotoRepository : IPhotoRepository
     {
         private PhotosContext db;
+        private IUserRepository users;
 
-        public PhotoRepository(PhotosContext context)
+        public PhotoRepository(PhotosContext context, IUserRepository usersRepository)
         {
             db = context;
+            users = usersRepository;
         }
 
         public IQueryable<Photo> GetPhotos()
         {
             return db.Photos;
+        }
+
+        public IQueryable<Photo> GetPhotos(string userLogin)
+        {
+            int userId = users.GetUserID(userLogin);
+            return db.Photos.Where(photo => photo.UserID == userId);
         }
 
         public Photo GetPhotoById(int id)

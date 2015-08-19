@@ -12,6 +12,7 @@ namespace Glinterion.DAL.Repository
     {
         IQueryable<Photo> GetPhotos();
         Photo GetPhotoById(int id);
+        IQueryable<Photo> GetPhotos(string userLogin);
         void AddPhoto(Photo photo);
         void DeletePhoto(int photoId);
         void UpdatePhoto(Photo photo);
