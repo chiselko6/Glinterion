@@ -68,35 +68,19 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
         }
     });
 
-   //  profile.uploader.onAfterAddingFile = function(item) {
-   //  	$timeout(function() {
-	  //   	$(".rating").rating({
-			// 	stars: 5,
-			// 	min: 0,
-			// 	max: 5,
-			// 	step: 1,
-			// 	"size": "sm"
-			// });
-	  //   }, 100);
-   //  }
-
     profile.uploader.onBeforeUploadItem = function (item) {
-    	var description = (item.description ? item.description : null);
     	var rating = (item.rating ? item.rating : null);
-	    item.headers.description = description;
+	    if (item.description) {
+		    item.headers.description = description;
+	    }
 	    item.headers.rating = rating;
 	};
 
 	profile.uploader.onSuccessItem = function(item, response, status, headers) {
-		profile.user.totalSize += +headers["size"] / 1024 / 1024;
+		profile.user.totalSize += (+headers["size"] / 1024 / 1024).toFixed(2);
 		profile.user.photosNumber++;
 		profile.photos.pages = getTotalPages();
-	}
-
-	// profile.galleryPhotoLinkClass = "gallery-photo-link";
-
-	profile.temp = function() {
-		console.log(5);
+		profile.selectPage();
 	}
 
     profile.abortUpload = function (index) {

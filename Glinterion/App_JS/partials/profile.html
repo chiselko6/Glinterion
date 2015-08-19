@@ -16,10 +16,10 @@
 				Photos uploaded: {{profile.user.photosNumber}}
 				Size: {{profile.user.totalSize}}
 			</div>
+			<input type="file" nv-file-select uploader="profile.uploader" multiple enctype="multipart/form-data" /><br/>
 		</div>
-		<div class="add-photo-section">
+		<div class="add-photo-section" ng-show="profile.uploader.queue.length">
 			<!-- <input type="file" nv-file-select uploader="profile.uploader" multiple/><br/> -->
-			<input type="file" nv-file-select="" uploader="profile.uploader" multiple enctype="multipart/form-data" /><br/>
 			<table class="table">
                 <thead>
                     <tr>
@@ -54,7 +54,7 @@
                         </td>
                         <td nowrap>
 
-                            <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || isNaN(+item.rating) || !item.description">
+                            <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
                                 <span class="glyphicon glyphicon-upload"></span> Upload
                             </button>
                             <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
@@ -95,7 +95,7 @@
 			</a>	
 		</div>
 		<nav>
-			<ul class="pagination" ng-init="profile.photos.photosPage = 1">
+			<ul class="pagination" ng-init="profile.photos.photosPage = 1;">
 				<li>
 					<a href aria-label="Previous" ng-click="profile.photos.photosPage = 
 					(profile.photos.photosPage > 1 ? profile.photos.photosPage - 1 : profile.photos.photosPage); 
@@ -103,7 +103,7 @@
 						<span aria-hidden="true">&laquo;</span>
 					</a>
 				</li>
-				<li data-ng-repeat="page in [] | range:profile.photos.pages">
+				<li data-ng-repeat="page in [] | range:profile.photos.pages" ng-class="{ 'active' : profile.photos.photosPage == page}">
 					<a href ng-click="profile.photos.photosPage = page; profile.selectPage(page)">
 						{{page}}
 					</a>

@@ -142,7 +142,9 @@ namespace Glinterion.Controllers
             var userLogin = "RomanFrom710";
             try
             {
-                string description = Request.Headers.GetValues("description").First();
+                IEnumerable<string> descriptions = new List<string>();
+                string description = (Request.Headers.TryGetValues("description", out descriptions) ? descriptions.First() : null);
+                
                 var ratings = Request.Headers.GetValues("rating");
                 double rating = (ratings == null ? 0 : (ratings.First() == "null" ? 0 : Double.Parse(Request.Headers.GetValues("rating").First())));
 
