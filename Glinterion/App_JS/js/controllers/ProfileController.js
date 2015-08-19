@@ -13,11 +13,48 @@ ProfileController.$inject = [
 function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupService, formDataObject, FileUploader, $timeout) {
 	var profile = this;
 
+	profile.photos = {};
 	profile.user = {};
-	profile.user.login = "chiselko6";
+
+	profile.photos.photosPage = 1;
+	profile.photos.photosPerPage = 5;
+	profile.photos.pages = 1;
+
+	profile.user.login = "RomanFrom710";
 	profile.user.accountType = "Simple";
 	profile.user.Id = $routeParams.userId;
-	profile.user.photos = PhotosDelivery(1, 9).query();
+
+	PhotosDelivery.getTotalNumber().success(function(data) {
+		profile.user.photosNumber = data;
+		profile.photos.pages = getTotalPages();
+	});
+	PhotosDelivery.getTotalSize().success(function(data) {
+		profile.user.totalSize = +data.toFixed(2);
+	});
+
+	function getTotalPages() {
+		var pages = Math.floor(profile.user.photosNumber / profile.photos.photosPerPage);
+		if (profile.user.photosNumber % profile.photos.photosPerPage != 0) {
+			pages++;
+		}
+		return pages;
+	}
+
+	(profile.selectPage = function() {
+		profile.user.photos = PhotosDelivery.getPhotos(profile.photos.photosPage, profile.photos.photosPerPage).query();
+
+		profile.user.photos.$promise.then(function(photos) {
+			var prefix = "http://" + location.host + "/";
+			// in order to set full path to files
+			photos.forEach(function(photo) {
+				photo.SrcPreview = prefix + photo.SrcPreview;
+				photo.SrcOriginal = prefix + photo.SrcOriginal;
+			});
+			// we don't pass additional parameter as 'gallery-photo-link' to <a> because ng-class doesn't have binding to property
+			PhotosPopupService($scope, photos);
+		});
+	})();
+
 	profile.uploader = new FileUploader({
 		url: "../../api/photos/upload",
 		queueLimit: 5
@@ -31,43 +68,36 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
         }
     });
 
-    profile.uploader.onAfterAddingFile = function(item) {
-    	$timeout(function() {
-	    	$(".rating").rating({
-				stars: 5,
-				min: 0,
-				max: 5,
-				step: 1,
-				"size": "sm"
-			});
-	    }, 100);
-    }
+   //  profile.uploader.onAfterAddingFile = function(item) {
+   //  	$timeout(function() {
+	  //   	$(".rating").rating({
+			// 	stars: 5,
+			// 	min: 0,
+			// 	max: 5,
+			// 	step: 1,
+			// 	"size": "sm"
+			// });
+	  //   }, 100);
+   //  }
 
     profile.uploader.onBeforeUploadItem = function (item) {
-    	if (!item.description || !item.rating) {
-			item.cancel();
-			return;
-		}
-		if (isNaN(+item.rating)) {
-			// profile.uploader.cancelItem(item);
-			item.cancel();
-			return;
-		}
-	    item.formData.push({description : item.description, rating: item.rating});
+    	var description = (item.description ? item.description : null);
+    	var rating = (item.rating ? item.rating : null);
+	    item.headers.description = description;
+	    item.headers.rating = rating;
 	};
+
+	profile.uploader.onSuccessItem = function(item, response, status, headers) {
+		profile.user.totalSize += +headers["size"] / 1024 / 1024;
+		profile.user.photosNumber++;
+		profile.photos.pages = getTotalPages();
+	}
 
 	// profile.galleryPhotoLinkClass = "gallery-photo-link";
 
-	profile.user.photos.$promise.then(function(photos) {
-		var prefix = "http://" + location.host + "/";
-		// in order to set full path to files
-		photos.forEach(function(photo) {
-			photo.SrcPreview = prefix + photo.SrcPreview;
-			photo.SrcOriginal = prefix + photo.SrcOriginal;
-		});
-		// we don't pass additional parameter as 'gallery-photo-link' to <a> because ng-class doesn't have binding to property
-		PhotosPopupService($scope, photos);
-	});
+	profile.temp = function() {
+		console.log(5);
+	}
 
     profile.abortUpload = function (index) {
         profile.upload[index].abort();

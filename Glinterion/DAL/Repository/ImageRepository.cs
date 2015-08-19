@@ -23,26 +23,29 @@ namespace Glinterion.DAL.Repository
             usersDb = userRepository;
         }
 
-        public async void Save(HttpContent file, string userLogin, string photoDescription, double rating)
+        public async void Save(Stream dataStream, string userLogin, string photoDescription, double rating)
         {
             var allPhotosCount = photosDb.GetPhotos().Count();
             var userId = usersDb.GetUsers().First(user => user.Login == userLogin).ID;
             int photoNumber = photosDb.GetPhotos().Count(ph => ph.UserID == userId) + 1;
-            var dataStream = await file.ReadAsStreamAsync();
+            //var dataStream = await file.ReadAsStreamAsync();
             byte[] bufferOriginal = new byte[dataStream.Length];
             await dataStream.ReadAsync(bufferOriginal, 0, (int)dataStream.Length);
-            var uploadFolderOriginal = "~/images/user_" + userLogin + "/original/";
-            var uploadFolderPreview = "~/images/user_" + userLogin + "/preview/";
-            var rootOriginal = HttpContext.Current.Server.MapPath(uploadFolderOriginal);
-            var rootPreview = HttpContext.Current.Server.MapPath(uploadFolderPreview);
+            var uploadFolderOriginal = "images/user_" + userLogin + "/original/";
+            var uploadFolderPreview = "images/user_" + userLogin + "/preview/";
+            var rootOriginal = HttpContext.Current.Server.MapPath("~/" + uploadFolderOriginal);
+            var rootPreview = HttpContext.Current.Server.MapPath("~/" + uploadFolderPreview);
             Directory.CreateDirectory(rootOriginal);
             Directory.CreateDirectory(rootPreview);
 
             byte[] bufferPreview = PhotoConverter.Resize(bufferOriginal, 100, 100);
 
             // TODO: get file extension
-            rootOriginal += "img" + photoNumber + ".jpg";
-            rootPreview += "img" + photoNumber + ".jpg";
+            string suffix = "img" + photoNumber + ".jpg";
+            rootOriginal +=  suffix;
+            uploadFolderOriginal += suffix;
+            rootPreview += suffix;
+            uploadFolderPreview += suffix;
             using (var stream = new FileStream(rootOriginal, FileMode.OpenOrCreate))
             {
                 await stream.WriteAsync(bufferOriginal, 0, bufferOriginal.Length);
@@ -59,8 +62,8 @@ namespace Glinterion.DAL.Repository
                 UserID = userId,
                 Size = (double)dataStream.Length / 1024 / 1024,
                 Rating = rating,
-                SrcOriginal = rootOriginal,
-                SrcPreview = rootPreview
+                SrcOriginal = uploadFolderOriginal,
+                SrcPreview = uploadFolderPreview
             };
             photosDb.AddPhoto(photo);
             photosDb.Save();

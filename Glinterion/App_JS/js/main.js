@@ -4,6 +4,7 @@ angular.module("glinterion", [
         "glinterionControllers",
         "glinterionServices",
         "glinterionDirectives",
+        "glinterionFilters",
         "angularFileUpload"
     ])
     .config([

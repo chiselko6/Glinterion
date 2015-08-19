@@ -8,7 +8,7 @@ using Glinterion.Models;
 
 namespace Glinterion.DAL.Initializers
 {
-    public class UsersInitializer : DropCreateDatabaseIfModelChanges<UsersContext>
+    public class UsersInitializer : DropCreateDatabaseAlways<UsersContext>
     {
         protected override void Seed(UsersContext context)
         {

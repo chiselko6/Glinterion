@@ -39,28 +39,38 @@ namespace Glinterion.Controllers
             usersDb = userRepository;
             this.imageRepository = imageRepository;
         }
-
+        
         // GET: api/Photos
         public IQueryable<Photo> GetPhotos()
         {
-            return photosDb.GetPhotos();
+            return photosDb.GetPhotos().OrderBy(photo => photo.ID);
         }
 
-        // GET: api/Photos/
-        //public IQueryable<Photo> GetPhotos(int startId, int endId)
-        //{
-        //    if (endId < startId)
-        //        return null;
-        //    var photos = photosDb.GetPhotos();
-        //    if (photos.Count() < startId)
-        //        return null;
-        //    return photos.OrderBy(photo => photo.ID).Skip(startId - 1).Take(endId - startId + 1);
-        //}
+        public IQueryable<Photo> UserPhotos()
+        {
+            string userLogin = "RomanFrom710";
+            return photosDb.GetPhotos(userLogin).OrderBy(photo => photo.ID);
+        }
+
+        [HttpGet]
+        public double TotalSize()
+        {
+            string userLogin = "RomanFrom710";
+            var photos = photosDb.GetPhotos(userLogin).OrderBy(photo => photo.ID).AsEnumerable();
+            return (photos == null ? 0 : photos.Sum(photo => photo.Size));
+        }
+
+        [HttpGet]
+        public double TotalNumber()
+        {
+            string userLogin = "RomanFrom710";
+            return photosDb.GetPhotos(userLogin).OrderBy(photo => photo.ID).Count();
+        }
 
         // GET: api/Photos
         public IQueryable<Photo> GetPhotos(int pageNumber, int photosPerPage)
         {
-            var photos = photosDb.GetPhotos().OrderBy(photo => photo.ID);
+            var photos = photosDb.GetPhotos("RomanFrom710").OrderBy(photo => photo.ID);
             if (photos.Count() >= pageNumber*photosPerPage)
             {
                 return photos.Skip((pageNumber - 1)*photosPerPage).Take(photosPerPage);
@@ -132,12 +142,23 @@ namespace Glinterion.Controllers
             var userLogin = "RomanFrom710";
             try
             {
-                string description = await provider.Contents[0].ReadAsStringAsync();
-                double rating = Double.Parse(await provider.Contents[1].ReadAsStringAsync());
-                imageRepository.Save(provider.Contents[2], userLogin, description, rating);
+                string description = Request.Headers.GetValues("description").First();
+                var ratings = Request.Headers.GetValues("rating");
+                double rating = (ratings == null ? 0 : (ratings.First() == "null" ? 0 : Double.Parse(Request.Headers.GetValues("rating").First())));
+
+                // provider.Contents[0] supposed to be description
+                //string description = await provider.Contents[0].ReadAsStringAsync();
+                // provider.Contents[1] supposed to be rating
+                //double rating = Double.Parse(await provider.Contents[1].ReadAsStringAsync());
+
+                // provider.Contents[2] supposed to be file
+                var dataStream = await provider.Contents[0].ReadAsStreamAsync();
+                var size = dataStream.Length;
+                imageRepository.Save(dataStream, userLogin, description, rating);
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent("Successful upload", Encoding.UTF8, "text/plain");
                 response.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(@"text/html");
+                response.Content.Headers.Add("size", size.ToString());
                 return response;
             }
             catch (Exception e)
@@ -145,52 +166,8 @@ namespace Glinterion.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e.Message);
             }
         }
-
-        // You could extract these two private methods to a separate utility class since
-        // they do not really belong to a controller class but that is up to you
-        private MultipartFormDataStreamProvider GetMultipartProvider(string folder)
-        {
-            var user = "gcd";
-            var uploadFolderOriginal = "~/images/user_" + user + "/original/"; // you could put this to web.config
-            var uploadFolderPreview = "~/images/user_" + user + "/preview/"; // you could put this to web.config
-            var root = HttpContext.Current.Server.MapPath(folder);
-            //var rootPreview = HttpContext.Current.Server.MapPath(uploadFolderPreview);
-            Directory.CreateDirectory(root);
-            //Directory.CreateDirectory(rootPreview);
-            return new MultipartFormDataStreamProvider(root);
-        }
-
-        // Extracts Request FormatData as a strongly typed model
-        private object GetFormData<T>(MultipartFormDataStreamProvider result)
-        {
-            if (result.FormData.HasKeys())
-            {
-                var unescapedFormData = Uri.UnescapeDataString(result.FormData.GetValues(0).FirstOrDefault() ?? String.Empty);
-                if (!String.IsNullOrEmpty(unescapedFormData))
-                    return JsonConvert.DeserializeObject<T>(unescapedFormData);
-            }
-
-            return null;
-        }
-
-        private string GetDeserializedFileName(MultipartFileData fileData)
-        {
-            var fileName = GetFileName(fileData);
-            return JsonConvert.DeserializeObject(fileName).ToString();
-        }
-
-        public string GetFileName(MultipartFileData fileData)
-        {
-            return fileData.Headers.ContentDisposition.FileName;
-        }
-
-        //string user = "user_chiselko6";D:\MAIN\Glinterion\Glinterion\App_Start\
-
-
-
-
-
-        // DELETE: api/Photos/5
+        
+        // DELETE: api/photos
         [ResponseType(typeof(Photo))]
         public IHttpActionResult DeletePhoto(int id)
         {

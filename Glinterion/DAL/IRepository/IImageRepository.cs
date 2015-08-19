@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Glinterion.DAL.IRepository
 {
     public interface IImageRepository
     {
-        void Save(HttpContent file, string userLogin, string photoDescription, double rating);
+        void Save(Stream dataStream, string userLogin, string photoDescription, double rating);
 
     }
 }

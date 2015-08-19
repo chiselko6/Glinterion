@@ -13,8 +13,8 @@
 				You have <span class="account-type">{{profile.user.accountType}}</span> account
 			</div>
 			<div class="user--album-details">
-				Photos uploaded: {{profile.user.photos.length}}
-				Size: {{profile.totalSize}}
+				Photos uploaded: {{profile.user.photosNumber}}
+				Size: {{profile.user.totalSize}}
 			</div>
 		</div>
 		<div class="add-photo-section">
@@ -71,10 +71,10 @@
                 <button type="button" class="btn btn-success btn-s" ng-click="profile.uploader.uploadAll()" ng-disabled="!profile.uploader.getNotUploadedItems().length">
                     <span class="glyphicon glyphicon-upload"></span> Upload all
                 </button>
-                <button type="button" class="btn btn-warning btn-s" ng-click="profile.uploader.cancelAll()" ng-disabled="!profile.uploader.isUploading">
+                <!-- <button type="button" class="btn btn-warning btn-s" ng-click="profile.uploader.cancelAll()" ng-disabled="!profile.uploader.isUploading">
                     <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-                </button>
-                <button type="button" class="btn btn-danger btn-s" ng-click="profile.uploader.clearQueue()" ng-disabled="!profile.queue.length">
+                </button> -->
+                <button type="button" class="btn btn-danger btn-s" ng-click="profile.uploader.clearQueue()">
                     <span class="glyphicon glyphicon-trash"></span> Remove all
                 </button>
             </div>
@@ -94,6 +94,29 @@
 				<img ng-src="{{photo.SrcPreview}}" class="gallery-photo" ng-attr-title="{{photo.Description}}">
 			</a>	
 		</div>
+		<nav>
+			<ul class="pagination" ng-init="profile.photos.photosPage = 1">
+				<li>
+					<a href aria-label="Previous" ng-click="profile.photos.photosPage = 
+					(profile.photos.photosPage > 1 ? profile.photos.photosPage - 1 : profile.photos.photosPage); 
+						profile.selectPage()">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+				<li data-ng-repeat="page in [] | range:profile.photos.pages">
+					<a href ng-click="profile.photos.photosPage = page; profile.selectPage(page)">
+						{{page}}
+					</a>
+				</li>
+				<li>
+					<a href aria-label="Next"  ng-click="profile.photos.photosPage = 
+					(profile.photos.photosPage < profile.photos.pages ? profile.photos.photosPage + 1 : profile.photos.photosPage);
+						profile.selectPage()">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 <script src="js/jquery.magnific-popup.js"></script> 
 <!-- Star-rating plugin -->
