@@ -18,7 +18,6 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.UI.WebControls;
 using Glinterion.DAL;
-using Glinterion.DAL.Contexts;
 using Glinterion.DAL.IRepository;
 using Glinterion.DAL.Repository;
 using Glinterion.Models;
@@ -31,46 +30,69 @@ namespace Glinterion.Controllers
     {
         private IPhotoRepository photosDb;
         private IUserRepository usersDb;
-        private IImageRepository imageRepository;
+        private IImageRepository imagesDb;
+        private IRoleRepository rolesDb;
+        private IAccountRepository accountsDb;
 
-        public PhotosController(IPhotoRepository photoRepository, IUserRepository userRepository, IImageRepository imageRepository)
+        public PhotosController(IPhotoRepository photoRepository, 
+                                IUserRepository userRepository, 
+                                IImageRepository imageRepository,
+                                IRoleRepository roleRepository,
+                                IAccountRepository accountRepository)
         {
             photosDb = photoRepository;
             usersDb = userRepository;
-            this.imageRepository = imageRepository;
+            imagesDb = imageRepository;
+            rolesDb = roleRepository;
+            accountsDb = accountRepository;
         }
         
         // GET: api/Photos
         public IQueryable<Photo> GetPhotos()
         {
-            return photosDb.GetPhotos().OrderBy(photo => photo.ID);
+            return photosDb.GetPhotos().OrderBy(photo => photo.PhotoId);
         }
 
         public IQueryable<Photo> UserPhotos()
         {
             string userLogin = "RomanFrom710";
-            return photosDb.GetPhotos(userLogin).OrderBy(photo => photo.ID);
+            return photosDb.GetPhotos(userLogin).OrderBy(photo => photo.PhotoId);
         }
 
         [HttpGet]
         public double TotalSize()
         {
             string userLogin = "RomanFrom710";
-            var photos = photosDb.GetPhotos(userLogin).OrderBy(photo => photo.ID).AsEnumerable();
-            return (photos == null ? 0 : photos.Sum(photo => photo.Size));
+            var photos = photosDb.GetPhotos(userLogin);
+            if (photos == null)
+            {
+                return 0;
+            }
+            photos = photos.OrderBy(photo => photo.PhotoId);
+            return (photos == null ? 0 : photos.AsEnumerable().Sum(photo => photo.Size));
         }
 
         [HttpGet]
         public double TotalNumber()
         {
             string userLogin = "RomanFrom710";
-            return photosDb.GetPhotos(userLogin).OrderBy(photo => photo.ID).Count();
+            var photos = photosDb.GetPhotos(userLogin);
+            if (photos == null)
+            {
+                return 0;
+            }
+            return photos.OrderBy(photo => photo.PhotoId).Count();
         }
 
         // GET: api/Photos
         public IQueryable<Photo> GetPhotos(int pageNumber, int photosPerPage)
         {
-            var photos = photosDb.GetPhotos("RomanFrom710").OrderBy(photo => photo.ID);
+            var photos = photosDb.GetPhotos("RomanFrom710");
+            if (photos == null)
+            {
+                return null;
+            }
+            photos = photos.OrderBy(photo => photo.PhotoId);
             if (photos.Count() >= pageNumber*photosPerPage)
             {
                 return photos.Skip((pageNumber - 1)*photosPerPage).Take(photosPerPage);
@@ -86,7 +108,7 @@ namespace Glinterion.Controllers
         [ResponseType(typeof(Photo))]
         public IHttpActionResult GetPhoto(int id)
         {
-            Photo photo = photosDb.GetPhotoById(id);
+            Photo photo = photosDb.GetPhoto(id);
             if (photo == null)
             {
                 return NotFound();
@@ -104,7 +126,7 @@ namespace Glinterion.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != photo.ID)
+            if (id != photo.PhotoId)
             {
                 return BadRequest();
             }
@@ -139,7 +161,8 @@ namespace Glinterion.Controllers
             }
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
-            var userLogin = "RomanFrom710";
+            // RomanFrom710
+            var user = usersDb.GetUser(1);
             try
             {
                 IEnumerable<string> descriptions = new List<string>();
@@ -156,7 +179,7 @@ namespace Glinterion.Controllers
                 // provider.Contents[2] supposed to be file
                 var dataStream = await provider.Contents[0].ReadAsStreamAsync();
                 var size = dataStream.Length;
-                imageRepository.Save(dataStream, userLogin, description, rating);
+                imagesDb.Save(dataStream, user, description, rating);
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent("Successful upload", Encoding.UTF8, "text/plain");
                 response.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(@"text/html");
@@ -173,7 +196,7 @@ namespace Glinterion.Controllers
         [ResponseType(typeof(Photo))]
         public IHttpActionResult DeletePhoto(int id)
         {
-            Photo photo = photosDb.GetPhotoById(id);
+            Photo photo = photosDb.GetPhoto(id);
             if (photo == null)
             {
                 return NotFound();
@@ -196,7 +219,7 @@ namespace Glinterion.Controllers
 
         private bool PhotoExists(int id)
         {
-            return photosDb.GetPhotos().Count(e => e.ID == id) > 0;
+            return photosDb.GetPhotos().Count(e => e.PhotoId == id) > 0;
         }
     }
 

@@ -23,16 +23,16 @@ namespace Glinterion.DAL.Repository
             usersDb = userRepository;
         }
 
-        public async void Save(Stream dataStream, string userLogin, string photoDescription, double rating)
+        public async void Save(Stream dataStream, User user, string photoDescription, double rating)
         {
             var allPhotosCount = photosDb.GetPhotos().Count();
-            var userId = usersDb.GetUsers().First(user => user.Login == userLogin).ID;
-            int photoNumber = photosDb.GetPhotos().Count(ph => ph.UserID == userId) + 1;
+            var userId = usersDb.GetUsers().First(u => u.Login == user.Login).UserId;
+            int photoNumber = photosDb.GetPhotos().AsEnumerable().Count(ph => ph.User.UserId == userId) + 1;
             //var dataStream = await file.ReadAsStreamAsync();
             byte[] bufferOriginal = new byte[dataStream.Length];
             await dataStream.ReadAsync(bufferOriginal, 0, (int)dataStream.Length);
-            var uploadFolderOriginal = "images/user_" + userLogin + "/original/";
-            var uploadFolderPreview = "images/user_" + userLogin + "/preview/";
+            var uploadFolderOriginal = "images/user_" + user.Login + "/original/";
+            var uploadFolderPreview = "images/user_" + user.Login + "/preview/";
             var rootOriginal = HttpContext.Current.Server.MapPath("~/" + uploadFolderOriginal);
             var rootPreview = HttpContext.Current.Server.MapPath("~/" + uploadFolderPreview);
             Directory.CreateDirectory(rootOriginal);
@@ -58,8 +58,8 @@ namespace Glinterion.DAL.Repository
             var photo = new Photo
             {
                 Description = photoDescription,
-                ID = allPhotosCount + 1,
-                UserID = userId,
+                PhotoId = allPhotosCount + 1,
+                User = user,
                 Size = (double)dataStream.Length / 1024 / 1024,
                 Rating = rating,
                 SrcOriginal = uploadFolderOriginal,

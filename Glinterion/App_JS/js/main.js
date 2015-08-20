@@ -18,7 +18,7 @@ function config($routeProvider, $compileProvider) {
             templateUrl: "partials/home.html",
             controller: "HomeController"
         }).
-        when("/profile/:userId", {
+        when("/profile/:userLogin", {
             templateUrl: "partials/profile.html",
             controller: "ProfileController"
         }).

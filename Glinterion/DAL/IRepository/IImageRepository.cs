@@ -11,7 +11,7 @@ namespace Glinterion.DAL.IRepository
 {
     public interface IImageRepository
     {
-        void Save(Stream dataStream, string userLogin, string photoDescription, double rating);
+        void Save(Stream dataStream, User user, string photoDescription, double rating);
 
     }
 }

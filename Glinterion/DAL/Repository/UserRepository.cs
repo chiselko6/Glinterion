@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
-using Glinterion.DAL.Contexts;
 using Glinterion.DAL.IRepository;
 using Glinterion.Models;
 
@@ -11,9 +11,9 @@ namespace Glinterion.DAL.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private UsersContext db;
+        private GlinterionContext db;
 
-        public UserRepository(UsersContext context)
+        public UserRepository(GlinterionContext context)
         {
             db = context;
         }
@@ -23,19 +23,24 @@ namespace Glinterion.DAL.Repository
             return db.Users;
         }
 
-        public IQueryable<User> GetUserByRole(string role)
+        public IQueryable<User> GetUsers(Expression<Func<User, bool>> predicate)
         {
-            return db.Users.Where(user => user.Role == role);
+            return (predicate == null ? GetUsers() : db.Users.Where(predicate));
+        }
+
+        public User GetUser(int id)
+        {
+            return db.Users.Find(id);
+        }
+
+        public User GetUser(Expression<Func<User, bool>> predicate)
+        {
+            return (predicate == null ? null : db.Users.FirstOrDefault(predicate));
         }
 
         public int GetUserID(string userLogin)
         {
-            return db.Users.First(user => user.Login == userLogin).ID;
-        }
-
-        public User GetUserById(int id)
-        {
-            return db.Users.Find(id);
+            return db.Users.First(user => user.Login == userLogin).UserId;
         }
 
         public void AddUser(User user)
@@ -45,7 +50,7 @@ namespace Glinterion.DAL.Repository
 
         public void DeleteUser(int userId)
         {
-            var user = GetUserById(userId);
+            var user = GetUser(u => u.UserId == userId);
             db.Users.Remove(user);
         }
 

@@ -20,9 +20,9 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
 	profile.photos.photosPerPage = 5;
 	profile.photos.pages = 1;
 
-	profile.user.login = "RomanFrom710";
+	profile.user.login = $routeParams.userLogin;
 	profile.user.accountType = "Simple";
-	profile.user.Id = $routeParams.userId;
+	//profile.user.Id = $routeParams.userId;
 
 	PhotosDelivery.getTotalNumber().success(function(data) {
 		profile.user.photosNumber = data;

@@ -1,0 +1,29 @@
+﻿@model MvcAuction.ViewModels.UserProfileViewModel
+@{
+	ViewBag.Title = "User's Profile";
+}
+
+<h2>User's profile</h2>
+
+<ul>
+	<li>
+		<strong>@Html.LabelFor(m => m.Email):</strong>
+		@Html.DisplayFor(m => m.Email)
+	</li>
+	<li>
+		<strong>@Html.LabelFor(m => m.FirstName):</strong>
+		@Html.DisplayFor(m => m.FirstName)
+	</li>
+	<li>
+		<strong>@Html.LabelFor(m => m.LastName):</strong>
+		@Html.DisplayFor(m => m.LastName)
+	</li>
+	<li>
+		<strong>@Html.LabelFor(m => m.PhoneNumber):</strong>
+		@Html.DisplayFor(m => m.PhoneNumber)
+	</li>
+	<li>
+		<strong>@Html.LabelFor(m => m.Id):</strong>
+		@Html.DisplayFor(m => m.Id)
+	</li>
+</ul>
