@@ -44,11 +44,21 @@ namespace Glinterion.DAL.Repository
                 return null;
             }
             int userId = user.UserId;
-            return db.Photos.Where(photo => photo.User.UserId == userId);
+            var photos = db.Photos;
+            if (photos == null)
+            {
+                return null;
+            }
+            return photos.Where(photo => photo.User.UserId == userId);
         }
 
         public Photo GetPhoto(int id)
         {
+            var photos = db.Photos;
+            if (photos == null || photos.Count() < id)
+            {
+                return null;
+            }
             return db.Photos.Find(id);
         }
 
@@ -59,6 +69,11 @@ namespace Glinterion.DAL.Repository
 
         public void DeletePhoto(int photoId)
         {
+            var photos = db.Photos;
+            if (photos == null || photos.Count() < photoId)
+            {
+                return;
+            }
             var photo = db.Photos.Find(photoId);
             db.Photos.Remove(photo);
         }

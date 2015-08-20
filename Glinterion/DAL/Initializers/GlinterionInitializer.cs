@@ -9,7 +9,7 @@ using Glinterion.Models;
 
 namespace Glinterion.DAL.Initializers
 {
-    public class GlinterionInitializer : DropCreateDatabaseAlways<GlinterionContext>
+    public class GlinterionInitializer : CreateDatabaseIfNotExists<GlinterionContext>
     {
         protected override void Seed(GlinterionContext context)
         {
@@ -222,12 +222,16 @@ namespace Glinterion.DAL.Initializers
             {
                 new Role
                 {
-                    Name = "admin"
+                    Name = "admin",
+                    RoleId = 1,
+                    Users = new List<User>()
                 },
 
                 new Role()
                 {
-                    Name = "user"
+                    Name = "user",
+                    RoleId = 2,
+                    Users = new List<User>()
                 }
 
             };
@@ -237,20 +241,24 @@ namespace Glinterion.DAL.Initializers
                 new Account
                 {
                     Color = Color.Green,
-                    Duration = TimeSpan.MaxValue,
-                    Name = "Basic"
+                    Duration = TimeSpan.Zero,
+                    Name = "Basic",
+                    AccountId = 1,
+                    Users = new List<User>()
                 },
 
                 new Account
                 {
                     Color = Color.Red,
                     Duration = TimeSpan.FromDays(30),
-                    Name = "Premium"
+                    Name = "Premium",
+                    AccountId = 2,
+                    Users = new List<User>()
                 }
             };
 
-            //_roles.ForEach(role => context.Roles.Add(role));
-            //_accounts.ForEach(account => context.Accounts.Add(account));
+            _roles.ForEach(role => context.Roles.Add(role));
+            _accounts.ForEach(account => context.Accounts.Add(account));
 
             context.SaveChanges();
         }

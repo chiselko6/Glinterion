@@ -37,12 +37,7 @@ namespace Glinterion.DAL.Repository
         {
             return (predicate == null ? null : db.Users.FirstOrDefault(predicate));
         }
-
-        public int GetUserID(string userLogin)
-        {
-            return db.Users.First(user => user.Login == userLogin).UserId;
-        }
-
+        
         public void AddUser(User user)
         {
             db.Users.Add(user);
@@ -51,6 +46,10 @@ namespace Glinterion.DAL.Repository
         public void DeleteUser(int userId)
         {
             var user = GetUser(u => u.UserId == userId);
+            if (user == null)
+            {
+                return;
+            }
             db.Users.Remove(user);
         }
 

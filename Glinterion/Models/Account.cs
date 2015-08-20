@@ -16,7 +16,10 @@ namespace Glinterion.Models
         [Required]
         public string Name { get; set; }
 
-        public TimeSpan Duration { get; set; }
+        public long DurationTicks { get; set; }
+
+        [NotMapped]
+        public TimeSpan Duration { get { return TimeSpan.FromTicks(DurationTicks); } set { DurationTicks = value.Ticks; } }
 
         // to be colored on profile page
         public Color Color { get; set; }

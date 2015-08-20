@@ -51,6 +51,10 @@ namespace Glinterion.DAL.Repository
         public void DeleteAccount(int id)
         {
             var account = GetAccount(id);
+            if (account == null)
+            {
+                return;
+            }
             db.Accounts.Remove(account);
         }
 

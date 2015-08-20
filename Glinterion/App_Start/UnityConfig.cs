@@ -1,5 +1,6 @@
 using Microsoft.Practices.Unity;
 using System.Web.Http;
+using Glinterion.DAL;
 using Glinterion.DAL.IRepository;
 using Glinterion.DAL.Repository;
 using Unity.WebApi;
@@ -21,6 +22,7 @@ namespace Glinterion
             container.RegisterType<IImageRepository, ImageRepository>();
             container.RegisterType<IAccountRepository, AccountRepository>();
             container.RegisterType<IRoleRepository, RoleRepository>();
+            container.RegisterType<GlinterionContext, GlinterionContext>(new ContainerControlledLifetimeManager());
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }

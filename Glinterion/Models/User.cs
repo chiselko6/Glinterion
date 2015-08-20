@@ -17,11 +17,12 @@ namespace Glinterion.Models
 
         public int RoleId { get; set; }
         
+        [Required]
         public string Email { get; set; }
 
         [ForeignKey("RoleId")]
         [InverseProperty("Users")]
-        public virtual Role Role { get; set; }
+        public Role Role { get; set; }
 
         public int AccountId { get; set; }
 
@@ -36,8 +37,8 @@ namespace Glinterion.Models
 
         [ForeignKey("AccountId")]
         [InverseProperty("Users")]
-        public virtual Account Account { get; set; }
+        public Account Account { get; set; }
 
-        public ICollection<Photo> Photos { get; set; } 
+        public virtual ICollection<Photo> Photos { get; set; } 
     }
 }

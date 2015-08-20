@@ -35,6 +35,11 @@ namespace Glinterion.DAL.Repository
 
         public Role GetRole(int id)
         {
+            var roles = db.Roles;
+            if (roles == null || roles.Count() < id)
+            {
+                return null;
+            }
             return db.Roles.Find(id);
         }
 
@@ -63,6 +68,11 @@ namespace Glinterion.DAL.Repository
         public void DeleteRole(int id)
         {
             var user = GetRole(id);
+            var roles = db.Roles;
+            if (roles == null || user == null || roles.Count() < id)
+            {
+                return;
+            }
             db.Roles.Remove(user);
         }
 

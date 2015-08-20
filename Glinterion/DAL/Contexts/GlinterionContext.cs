@@ -27,12 +27,23 @@ namespace Glinterion.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            
+            //modelBuilder.Entity<User>()
+            //    .HasMany(u => u.Photos)
+            //    .WithRequired(u => u.User);
+            //modelBuilder.Entity<Photo>()
+            //    .HasRequired(p => p.User);
+            //modelBuilder.Entity<Account>()
+            //    .HasMany(a => a.Users)
+            //    .WithRequired(u => u.Account);
+            //modelBuilder.Entity<Role>()
+            //    .HasMany(r => r.Users)
+            //    .WithRequired(u => u.Role);
+
             // when database is being created, its name is going to be 'Photos',
             // so in order to make it 'Photo' according to db name conventions we 
             // have to use this approach
-            
-            //modelBuilder.Conventions.Remove<PluralizingTableNameConvention>(); 
+
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>(); 
         }
     }
 }

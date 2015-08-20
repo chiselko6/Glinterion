@@ -42,6 +42,10 @@ namespace Glinterion.Providers
             user.Account = accountsDb.GetAccount(acc => acc.Name == "Basic");
             user.Role = rolesDb.GetRole(u => u.Name == "user");
             user.Password = GetMD5Hash(user.Password);
+            user.AccountId = user.Account.AccountId;
+            user.RoleId = user.Role.RoleId;
+            var temp = usersDb.GetUsers();
+            user.UserId = (temp == null ? 1 : temp.Count() + 1);
 
             usersDb.AddUser(user);
             usersDb.Save();
