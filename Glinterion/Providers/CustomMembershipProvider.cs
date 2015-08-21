@@ -19,35 +19,36 @@ namespace Glinterion.Providers
 {
     public class CustomMembershipProvider : MembershipProvider
     {
-        private IUserRepository usersDb;
-        private IAccountRepository accountsDb;
-        private IRoleRepository rolesDb;
+        private IGenericRepository<User> usersDb;
+        private IGenericRepository<Account> accountsDb;
+        private IGenericRepository<Role> rolesDb;
 
         public CustomMembershipProvider()
         {
-            usersDb = (IUserRepository) ((IDependencyScope) GlobalConfiguration.Configuration.DependencyResolver).GetService(typeof (IUserRepository));
-            accountsDb = (IAccountRepository)((IDependencyScope)GlobalConfiguration.Configuration.DependencyResolver).GetService(typeof(IAccountRepository));
-            rolesDb = (IRoleRepository)((IDependencyScope)GlobalConfiguration.Configuration.DependencyResolver).GetService(typeof(IRoleRepository));
+            var uof = DependencyResolver.Current.GetService<IUnitOfWork>();
+            usersDb = uof.Repository<User>();
+            accountsDb = uof.Repository<Account>();
+            rolesDb = uof.Repository<Role>();
 
         }
 
         public MembershipUser CreateUser(RegisterViewModel register)
         {
-            if (usersDb.GetUser(u => u.Login == register.Login) != null)
+            if (usersDb.Get(u => u.Login == register.Login) != null)
             {
                 return null;
             }
 
             var user = Mapper.Map<RegisterViewModel, User>(register);
-            user.Account = accountsDb.GetAccount(acc => acc.Name == "Basic");
-            user.Role = rolesDb.GetRole(u => u.Name == "user");
+            user.Account = accountsDb.Get(acc => acc.Name == "Base");
+            user.Role = rolesDb.Get(u => u.Name == "user");
             user.Password = GetMD5Hash(user.Password);
             user.AccountId = user.Account.AccountId;
             user.RoleId = user.Role.RoleId;
-            var temp = usersDb.GetUsers();
+            var temp = usersDb.GetAll();
             user.UserId = (temp == null ? 1 : temp.Count() + 1);
 
-            usersDb.AddUser(user);
+            usersDb.Add(user);
             usersDb.Save();
 
             return GetUser(user.Login, false);
@@ -140,7 +141,7 @@ namespace Glinterion.Providers
         {
             string sha1Pswd = GetMD5Hash(password);
 
-            var userObj = usersDb.GetUser(u => u.Login == userLogin && u.Password == sha1Pswd);
+            var userObj = usersDb.Get(u => u.Login == userLogin && u.Password == sha1Pswd);
 
             if (userObj != null)
                 return true;
@@ -159,7 +160,7 @@ namespace Glinterion.Providers
 
         public override MembershipUser GetUser(string userLogin, bool userIsOnline)
         {
-            User user = usersDb.GetUser(u => u.Login == userLogin);
+            User user = usersDb.Get(u => u.Login == userLogin);
 
             if (user != null)
             {

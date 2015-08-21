@@ -1,4 +1,4 @@
-﻿@model MvcAuction.ViewModels.LoginViewModel
+﻿@model Glinterion.ViewModels.LoginViewModel
 
 @{
 	ViewBag.Title = "Login";
@@ -9,20 +9,15 @@
 	@Html.AntiForgeryToken()
 	@Html.ValidationSummary(true)
 	<div class="form-group">
-		@Html.LabelFor(m => m.Email)
-		@Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email..." } })
-		@Html.ValidationMessageFor(u => u.Email)
+		@Html.LabelFor(m => m.Login)
+		@Html.EditorFor(m => m.Login, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email..." } })
+		@Html.ValidationMessageFor(u => u.Login)
 	</div>
 
 	<div class="form-group">
 		@Html.LabelFor(m => m.Password)
 				@Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Password..." } })
 				@Html.ValidationMessageFor(u => u.Password)
-	</div>
-
-	<div class="checkbox">
-		@Html.EditorFor(m => m.RememberMe, new { htmlAttributes = new { @class = "checkbox" } })
-		@Html.LabelFor(m => m.RememberMe)
 	</div>
 
 	<button type="submit" class="btn btn-primary">Login</button>

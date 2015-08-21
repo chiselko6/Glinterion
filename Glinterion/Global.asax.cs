@@ -22,7 +22,6 @@ namespace Glinterion
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            UnityConfig.RegisterComponents();
     
             Database.SetInitializer(new GlinterionInitializer());
             AutoMapperConfiguration.Configure();

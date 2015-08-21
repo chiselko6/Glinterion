@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using Glinterion.DAL;
 using Glinterion.DAL.IRepository;
@@ -28,55 +29,55 @@ namespace Glinterion.Controllers
 {
     public class PhotosController : ApiController
     {
-        private IPhotoRepository photosDb;
-        private IUserRepository usersDb;
+        private IGenericRepository<User> usersDb;
         private IImageRepository imagesDb;
-        private IRoleRepository rolesDb;
-        private IAccountRepository accountsDb;
-
-        public PhotosController(IPhotoRepository photoRepository, 
-                                IUserRepository userRepository, 
-                                IImageRepository imageRepository,
-                                IRoleRepository roleRepository,
-                                IAccountRepository accountRepository)
+        private IGenericRepository<Role> rolesDb;
+        private IGenericRepository<Account> accountsDb;
+        private IGenericRepository<Photo> photosDb;
+        private IUnitOfWork uof;
+        
+        public PhotosController()
         {
-            photosDb = photoRepository;
-            usersDb = userRepository;
-            imagesDb = imageRepository;
-            rolesDb = roleRepository;
-            accountsDb = accountRepository;
+            uof = DependencyResolver.Current.GetService<IUnitOfWork>();
+            accountsDb = uof.Repository<Account>();
+            rolesDb = uof.Repository<Role>();
+            usersDb = uof.Repository<User>();
+            photosDb = uof.Repository<Photo>();
+
+            imagesDb = DependencyResolver.Current.GetService<IImageRepository>();
         }
         
         // GET: api/Photos
-        public IQueryable<Photo> GetPhotos()
+        public IEnumerable<Photo> GetPhotos()
         {
-            return photosDb.GetPhotos().OrderBy(photo => photo.PhotoId);
+            return photosDb.GetAll();
         }
 
-        public IQueryable<Photo> UserPhotos()
+        public IEnumerable<Photo> UserPhotos()
         {
             string userLogin = "RomanFrom710";
-            return photosDb.GetPhotos(userLogin).OrderBy(photo => photo.PhotoId);
+            return photosDb.GetAll(photo => photo.User.Login == userLogin);
         }
 
-        [HttpGet]
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/photos/totalsize")]
         public double TotalSize()
         {
             string userLogin = "RomanFrom710";
-            var photos = photosDb.GetPhotos(userLogin);
+            var photos = photosDb.GetAll(photo => photo.User.Login == userLogin);
             if (photos == null)
             {
                 return 0;
             }
             photos = photos.OrderBy(photo => photo.PhotoId);
-            return (photos == null ? 0 : photos.AsEnumerable().Sum(photo => photo.Size));
+            return (photos == null ? 0 : photos.Sum(photo => photo.Size));
         }
 
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         public double TotalNumber()
         {
             string userLogin = "RomanFrom710";
-            var photos = photosDb.GetPhotos(userLogin);
+            var photos = photosDb.GetAll( photo => photo.User.Login == userLogin);
             if (photos == null)
             {
                 return 0;
@@ -85,14 +86,13 @@ namespace Glinterion.Controllers
         }
 
         // GET: api/Photos
-        public IQueryable<Photo> GetPhotos(int pageNumber, int photosPerPage)
+        public IEnumerable<Photo> GetPhotos(int pageNumber, int photosPerPage)
         {
-            var photos = photosDb.GetPhotos("RomanFrom710");
+            var photos = photosDb.GetAll(photo => photo.User.Login == "RomanFrom710");
             if (photos == null)
             {
                 return null;
             }
-            photos = photos.OrderBy(photo => photo.PhotoId);
             if (photos.Count() >= pageNumber*photosPerPage)
             {
                 return photos.Skip((pageNumber - 1)*photosPerPage).Take(photosPerPage);
@@ -108,7 +108,7 @@ namespace Glinterion.Controllers
         [ResponseType(typeof(Photo))]
         public IHttpActionResult GetPhoto(int id)
         {
-            Photo photo = photosDb.GetPhoto(id);
+            Photo photo = photosDb.GetById(id);
             if (photo == null)
             {
                 return NotFound();
@@ -131,7 +131,7 @@ namespace Glinterion.Controllers
                 return BadRequest();
             }
 
-            photosDb.UpdatePhoto(photo);
+            photosDb.Update(photo);
 
             try
             {
@@ -152,7 +152,7 @@ namespace Glinterion.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        [HttpPost]// This is from System.Web.Http, and not from System.Web.Mvc
+        [System.Web.Http.HttpPost]// This is from System.Web.Http, and not from System.Web.Mvc
         public async Task<HttpResponseMessage> Upload()
         {
             if (!Request.Content.IsMimeMultipartContent())
@@ -162,7 +162,7 @@ namespace Glinterion.Controllers
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
             // RomanFrom710
-            var user = usersDb.GetUser(1);
+            var user = usersDb.GetById(2);
             try
             {
                 IEnumerable<string> descriptions = new List<string>();
@@ -196,13 +196,9 @@ namespace Glinterion.Controllers
         [ResponseType(typeof(Photo))]
         public IHttpActionResult DeletePhoto(int id)
         {
-            Photo photo = photosDb.GetPhoto(id);
-            if (photo == null)
-            {
-                return NotFound();
-            }
-
-            photosDb.DeletePhoto(id);
+            Photo photo = photosDb.GetById(id);
+            
+            photosDb.Delete(photo);
             photosDb.Save();
 
             return Ok(photo);
@@ -210,16 +206,12 @@ namespace Glinterion.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                photosDb.Dispose();
-            }
-            base.Dispose(disposing);
+            base.Dispose();
         }
 
         private bool PhotoExists(int id)
         {
-            return photosDb.GetPhotos().Count(e => e.PhotoId == id) > 0;
+            return photosDb.GetAll().Count(e => e.PhotoId == id) > 0;
         }
     }
 

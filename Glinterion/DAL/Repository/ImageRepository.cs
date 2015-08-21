@@ -14,20 +14,21 @@ namespace Glinterion.DAL.Repository
 {
     public class ImageRepository : IImageRepository
     {
-        private IPhotoRepository photosDb;
-        private IUserRepository usersDb;
+        private IGenericRepository<Photo> photosDb;
+        private IGenericRepository<User> usersDb;
 
-        public ImageRepository(IPhotoRepository photoRepository, IUserRepository userRepository)
+        public ImageRepository(IUnitOfWork uof)
         {
-            photosDb = photoRepository;
-            usersDb = userRepository;
+
+            photosDb = uof.Repository<Photo>();
+            usersDb = uof.Repository<User>();
         }
 
         public async void Save(Stream dataStream, User user, string photoDescription, double rating)
         {
-            var allPhotosCount = photosDb.GetPhotos().Count();
-            var userId = usersDb.GetUsers().First(u => u.Login == user.Login).UserId;
-            int photoNumber = photosDb.GetPhotos().AsEnumerable().Count(ph => ph.User.UserId == userId) + 1;
+            var allPhotosCount = photosDb.GetAll().Count();
+            var userId = usersDb.GetAll().First(u => u.Login == user.Login).UserId;
+            int photoNumber = photosDb.GetAll().AsEnumerable().Count(ph => ph.User.UserId == userId) + 1;
             //var dataStream = await file.ReadAsStreamAsync();
             byte[] bufferOriginal = new byte[dataStream.Length];
             await dataStream.ReadAsync(bufferOriginal, 0, (int)dataStream.Length);
@@ -65,7 +66,7 @@ namespace Glinterion.DAL.Repository
                 SrcOriginal = uploadFolderOriginal,
                 SrcPreview = uploadFolderPreview
             };
-            photosDb.AddPhoto(photo);
+            photosDb.Add(photo);
             photosDb.Save();
         }
     }

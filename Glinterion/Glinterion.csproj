@@ -59,6 +59,18 @@
       <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -86,6 +98,10 @@
     </Reference>
     <Reference Include="Unity.WebApi, Version=5.1.0.0, Culture=neutral, PublicKeyToken=43da31bc42a85347, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.WebAPI.5.1\lib\net45\Unity.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -444,23 +460,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AutoMapperConfiguration.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
     <Compile Include="DAL\Contexts\GlinterionContext.cs" />
     <Compile Include="DAL\Initializers\GlinterionInitializer.cs" />
-    <Compile Include="DAL\IRepository\IAccountRepository.cs" />
+    <Compile Include="DAL\IRepository\IGenericRepository.cs" />
     <Compile Include="DAL\IRepository\IImageRepository.cs" />
-    <Compile Include="DAL\IRepository\IPhotoRepository.cs" />
-    <Compile Include="DAL\IRepository\IRoleRepository.cs" />
-    <Compile Include="DAL\IRepository\IUserRepository.cs" />
-    <Compile Include="DAL\Repository\AccountRepository.cs" />
+    <Compile Include="DAL\IRepository\IUnitOfWork.cs" />
+    <Compile Include="DAL\Repository\GenericRepository.cs" />
     <Compile Include="DAL\Repository\ImageRepository.cs" />
-    <Compile Include="DAL\Repository\PhotoRepository.cs" />
-    <Compile Include="DAL\Repository\RoleRepository.cs" />
-    <Compile Include="DAL\Repository\UserRepository.cs" />
+    <Compile Include="DAL\Repository\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -486,6 +499,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

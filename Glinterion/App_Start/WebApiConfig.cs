@@ -15,7 +15,7 @@ namespace Glinterion
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "a;sdkj",
+                name: "DefaultApi",
                 routeTemplate: "api/{controller}/{action}",
                 defaults: new { action = RouteParameter.Optional} 
             );

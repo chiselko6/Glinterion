@@ -16,7 +16,5 @@ namespace Glinterion.ViewModels
         [Required(AllowEmptyStrings = false, ErrorMessage = "Enter the password!")]
         [DisplayName("Password")]
         public string Password { get; set; }
-
-        
     }
 }
