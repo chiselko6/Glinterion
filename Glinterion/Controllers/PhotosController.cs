@@ -204,11 +204,6 @@ namespace Glinterion.Controllers
             return Ok(photo);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose();
-        }
-
         private bool PhotoExists(int id)
         {
             return photosDb.GetAll().Count(e => e.PhotoId == id) > 0;

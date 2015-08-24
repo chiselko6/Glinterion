@@ -11,7 +11,7 @@ using Glinterion.Models;
 
 namespace Glinterion.DAL.Initializers
 {
-    public class GlinterionInitializer : DropCreateDatabaseAlways<GlinterionContext>
+    public class GlinterionInitializer : CreateDatabaseIfNotExists<GlinterionContext>
     {
         protected override void Seed(GlinterionContext context)
         {

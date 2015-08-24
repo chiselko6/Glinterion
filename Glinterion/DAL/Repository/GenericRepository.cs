@@ -5,6 +5,7 @@ using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using System.Web.Mvc;
 using Glinterion.DAL.IRepository;
 
 namespace Glinterion.DAL.Repository
@@ -14,10 +15,10 @@ namespace Glinterion.DAL.Repository
         private GlinterionContext context;
         private DbSet<TEntity> db;
 
-        public GenericRepository(GlinterionContext context)
+        public GenericRepository()
         {
-            this.context = context;
-            db = this.context.Set<TEntity>();
+            context = DependencyResolver.Current.GetService<GlinterionContext>();
+            db = context.Set<TEntity>();
         }
 
         public IEnumerable<TEntity> GetAll()

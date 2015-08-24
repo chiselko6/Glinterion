@@ -65,10 +65,10 @@ namespace Glinterion.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InSingletonScope();
-            kernel.Bind<IImageRepository>().To<ImageRepository>().InSingletonScope();
-            kernel.Bind<GlinterionContext>().ToSelf().InSingletonScope();
-            kernel.Bind(typeof(IGenericRepository<>)).To(typeof(GenericRepository<>)).InSingletonScope();
+            kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();
+            kernel.Bind<IImageRepository>().To<ImageRepository>().InRequestScope();
+            kernel.Bind<GlinterionContext>().ToSelf().InRequestScope();
+            kernel.Bind(typeof(IGenericRepository<>)).To(typeof(GenericRepository<>)).InRequestScope();
         }        
     }
 }
