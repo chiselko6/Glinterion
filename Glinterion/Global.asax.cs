@@ -8,6 +8,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
+using System.Web.Optimization;
 using Glinterion.App_Start;
 using Glinterion.DAL;
 using Glinterion.DAL.Initializers;
@@ -22,6 +23,7 @@ namespace Glinterion
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
     
             Database.SetInitializer(new GlinterionInitializer());
             AutoMapperConfiguration.Configure();

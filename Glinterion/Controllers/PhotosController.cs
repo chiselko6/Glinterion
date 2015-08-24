@@ -27,6 +27,7 @@ using Newtonsoft.Json;
 
 namespace Glinterion.Controllers
 {
+    [System.Web.Http.Authorize]
     public class PhotosController : ApiController
     {
         private IGenericRepository<User> usersDb;

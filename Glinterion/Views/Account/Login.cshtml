@@ -1,24 +1,45 @@
 ﻿@model Glinterion.ViewModels.LoginViewModel
 
 @{
-	ViewBag.Title = "Login";
+    ViewBag.Title = "Login";
 }
 
-@using (Html.BeginForm())
+@*<div id="loginModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Login</h4>
+            </div>
+            <div class="modal-body">*@
+@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
-	@Html.AntiForgeryToken()
-	@Html.ValidationSummary(true)
-	<div class="form-group">
-		@Html.LabelFor(m => m.Login)
-		@Html.EditorFor(m => m.Login, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email..." } })
-		@Html.ValidationMessageFor(u => u.Login)
-	</div>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="form-group">
+        @Html.LabelFor(m => m.Login, new { @class = "col-md-2 control-label" })
+        <div class="col-md-4">
+            @Html.EditorFor(m => m.Login, new { htmlAttributes = new { @class = "form-control", @placeholder = "Login" } })
+            @Html.ValidationMessageFor(u => u.Login)
+        </div>
+            
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        <div class="col-md-4">
+            @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Password" } })
+            @Html.ValidationMessageFor(u => u.Password)
+        </div>
+           
+    </div>
 
-	<div class="form-group">
-		@Html.LabelFor(m => m.Password)
-				@Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Password..." } })
-				@Html.ValidationMessageFor(u => u.Password)
-	</div>
-
-	<button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary col-md-offset-2">Login</button>
 }
+@*</div>
+<div class="modal-footer">
+<button type="submit" class="btn btn-primary">Login</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+            </div>
+        </div>
+    </div>*@

@@ -3,3 +3,5 @@ Glinterion:
  ☐ even after reloading page photos are not shown @BUG
  ☐ stylize login/register page
  ☐ stylize user profile page
+ ☐ no sharing information about user between apicontrollers and controllers
+ ☐ fixed navbar everywhere has two sources: in asp and in app_js
