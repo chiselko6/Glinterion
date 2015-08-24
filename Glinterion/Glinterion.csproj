@@ -465,10 +465,8 @@
     <Compile Include="DAL\Contexts\GlinterionContext.cs" />
     <Compile Include="DAL\Initializers\GlinterionInitializer.cs" />
     <Compile Include="DAL\IRepository\IGenericRepository.cs" />
-    <Compile Include="DAL\IRepository\IImageRepository.cs" />
     <Compile Include="DAL\IRepository\IUnitOfWork.cs" />
     <Compile Include="DAL\Repository\GenericRepository.cs" />
-    <Compile Include="DAL\Repository\ImageRepository.cs" />
     <Compile Include="DAL\Repository\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -477,9 +475,10 @@
     <Compile Include="Models\Photo.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="PhotoHelpers\PhotoConverter.cs" />
+    <Compile Include="Services\PhotoServices\PhotoConverterService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\CustomMembershipProvider.cs" />
+    <Compile Include="Services\PhotoServices\PhotoSaveService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
   </ItemGroup>

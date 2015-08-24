@@ -1,6 +1,7 @@
 using Glinterion.DAL;
 using Glinterion.DAL.IRepository;
 using Glinterion.DAL.Repository;
+using Glinterion.Services.PhotoServices;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Glinterion.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Glinterion.App_Start.NinjectWebCommon), "Stop")]
@@ -66,7 +67,7 @@ namespace Glinterion.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InRequestScope();
-            kernel.Bind<IImageRepository>().To<ImageRepository>().InRequestScope();
+            kernel.Bind<PhotoSaveService>().To<PhotoSaveService>().InRequestScope();
             kernel.Bind<GlinterionContext>().ToSelf().InRequestScope();
             kernel.Bind(typeof(IGenericRepository<>)).To(typeof(GenericRepository<>)).InRequestScope();
         }        

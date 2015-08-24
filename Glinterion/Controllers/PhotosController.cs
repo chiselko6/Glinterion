@@ -23,6 +23,7 @@ using Glinterion.DAL.IRepository;
 using Glinterion.DAL.Repository;
 using Glinterion.Models;
 using Glinterion.PhotoHelpers;
+using Glinterion.Services.PhotoServices;
 using Newtonsoft.Json;
 
 namespace Glinterion.Controllers
@@ -31,11 +32,11 @@ namespace Glinterion.Controllers
     public class PhotosController : ApiController
     {
         private IGenericRepository<User> usersDb;
-        private IImageRepository imagesDb;
         private IGenericRepository<Role> rolesDb;
         private IGenericRepository<Account> accountsDb;
         private IGenericRepository<Photo> photosDb;
         private IUnitOfWork uof;
+        private PhotoSaveService photoSaveService;
         
         public PhotosController()
         {
@@ -45,7 +46,7 @@ namespace Glinterion.Controllers
             usersDb = uof.Repository<User>();
             photosDb = uof.Repository<Photo>();
 
-            imagesDb = DependencyResolver.Current.GetService<IImageRepository>();
+            photoSaveService = DependencyResolver.Current.GetService<PhotoSaveService>();
         }
         
         // GET: api/Photos
@@ -163,7 +164,8 @@ namespace Glinterion.Controllers
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
             // RomanFrom710
-            var user = usersDb.GetById(2);
+            var userName = User.Identity.Name;
+            var user = usersDb.Get(u => u.Login == userName);
             try
             {
                 IEnumerable<string> descriptions = new List<string>();
@@ -177,10 +179,10 @@ namespace Glinterion.Controllers
                 // provider.Contents[1] supposed to be rating
                 //double rating = Double.Parse(await provider.Contents[1].ReadAsStringAsync());
 
-                // provider.Contents[2] supposed to be file
                 var dataStream = await provider.Contents[0].ReadAsStreamAsync();
+                var fileExtension = Request.Headers.GetValues("fileExtension").FirstOrDefault();
                 var size = dataStream.Length;
-                imagesDb.Save(dataStream, user, description, rating);
+                photoSaveService.Save(dataStream, user, description, rating, fileExtension);
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent("Successful upload", Encoding.UTF8, "text/plain");
                 response.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(@"text/html");

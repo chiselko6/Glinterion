@@ -43,6 +43,7 @@ namespace Glinterion.DAL.Repository
 
         public void Add(TEntity entity)
         {
+            var entities = db.AsEnumerable();
             db.Add(entity);
         }
 

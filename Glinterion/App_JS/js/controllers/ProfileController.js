@@ -71,10 +71,16 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
     profile.uploader.onBeforeUploadItem = function (item) {
     	var rating = (item.rating ? item.rating : null);
 	    if (item.description) {
-		    item.headers.description = description;
+		    item.headers.description = item.description;
 	    }
 	    item.headers.rating = rating;
-	};
+	    var getFileExtension = function(item) {
+	    	var name = item._file.name;
+        	var parts = name.split('.');
+        	return parts[parts.length - 1];
+	    }
+        item.headers.fileExtension = getFileExtension(item);
+    };
 
 	profile.uploader.onSuccessItem = function(item, response, status, headers) {
 		profile.user.totalSize += (+headers["size"] / 1024 / 1024).toFixed(2);

@@ -1,7 +1,8 @@
 Glinterion: 
  ☐ in profile page user needs to reload page to see photos added/deleted..
  ☐ even after reloading page photos are not shown @BUG
- ☐ stylize login/register page
+ ✔ stylize login/register page @done (15-08-24 19:29)
  ☐ stylize user profile page
  ☐ no sharing information about user between apicontrollers and controllers
  ☐ fixed navbar everywhere has two sources: in asp and in app_js
+ ✔ images uploaded save with ~guid names @done (15-08-24 19:59)
