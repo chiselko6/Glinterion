@@ -1,9 +1,11 @@
 <div ng-controller="ProfileController as profile">
 	<div class="profile-header">
-		<div class="avatar">
+<!-- 		<div class="avatar">
 			<img ng-src="{{profile.user.AvatarSrc}}">
+			<input id="avatar-input" type="file" multiple enctype="multipart/form-data"/>
+			<button type="button" class="btn btn_submit" ng-show="{{avatar-input}}"></button>
 		</div>
-		<div class="user--info">
+ -->		<div class="user--info">
 			<div class="user--login">
 				<div class="user--login">
 					Hello, {{profile.user.login}}
@@ -11,7 +13,8 @@
 			</div>
 			</br>
 			<div class="user--account">
-				You have <span class="account-type">{{profile.user.accountType}}</span> account
+				You have <span class="account-type" ng-style="{'color': profile.user.account.Color}">{{profile.user.account.Name}}</span> account
+				<a href="account"><button type="btn btn_submit">Enter coupon</button></a>
 			</div>
 			</br>
 			<div class="user--album-details">

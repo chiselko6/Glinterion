@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -38,9 +39,10 @@ namespace Glinterion.Controllers
             if (membershipUser == null)
             {
                 ModelState.AddModelError(string.Empty, "This login already exists!");
+                return View();
             }
             FormsAuthentication.SetAuthCookie(model.Login, false);
-            return RedirectToAction("Login");
+            return Redirect("/App_JS/index.html#/profile/" + model.Login);
         }
 
         [HttpGet]
@@ -71,6 +73,19 @@ namespace Glinterion.Controllers
                 return Redirect(returnUrl);
             }
             return Redirect("/App_JS/index.html#/profile/" + model.Login);
+        }
+
+        [Authorize]
+        public new ActionResult Profile()
+        {
+            return Redirect("/App_JS/index.html#/profile/" + User.Identity.Name);
+        }
+
+        [Authorize]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -34,16 +34,8 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Contacts", "Contacts", "Home")</li>
                 </ul>
-                <div class="navbar-right collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li>
-                            @Html.ActionLink("Login", "Login", "Account")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Register", "Register", "Account")
-                        </li>
-                    </ul>
-                </div>
+                @Html.Partial("_LoginPartial")
+                
             </div>
         </div>
     </nav>

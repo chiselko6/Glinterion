@@ -16,6 +16,7 @@
         <script src="../.bin/bower_components/angular-resource/angular-resource.js"></script>
         <script src="../.bin/bower_components/angular-route/angular-route.js"></script>
         <script src="../.bin/bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+        <script src="../.bin/bower_components/auth0-angular/src/auth0-angular.js"></script>
 
 		
 		<!-- Filters -->
@@ -26,18 +27,20 @@
 		<script src="js/controllers/controllersModule.js"></script>
 		<script src="js/controllers/HomeController.js"></script>
 		<script src="js/controllers/ProfileController.js"></script>
+		<script src="js/controllers/AccountController.js"></script>
 		
 		<!-- Services -->
 		<script src="js/services/servicesModule.js"></script>
-		<script src="js/services/PhotosDeliveryService.js"></script>
+		<script src="js/services/ObjectDeliveryService.js"></script>
 		<script src="js/services/PhotosPopupService.js"></script>
+		<script src="js/services/CouponCheckingService.js"></script>
 		
 		<!-- Directives -->
 		<script src="js/directives/directivesModule.js"></script>
 		<script src="js/directives/ngThumb.js"></script>
+		<script src="js/directives/fileModelDirective.js"></script>
 		
 		<script src="js/main.js"></script>
-
 	</head>
 	<body ng-app="glinterion">
 		<nav class="navbar navbar-inverse">
@@ -49,13 +52,12 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">Glinterion</a>
+					<a class="navbar-brand" href="/../">Glinterion</a>
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#contact">Contact</a></li>
+						<li class="active"><a href="/../">Home</a></li>
+						<li><a href="/../contacts">Contact</a></li>
 					</ul>
 				</div>
 			</div>

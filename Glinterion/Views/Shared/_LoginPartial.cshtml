@@ -3,7 +3,7 @@
 	<div class="navbar-right">
 		<ul class="nav navbar-nav navbar-right">
 			<li>
-				@Html.ActionLink(HttpContext.Current.User.Identity.Name, "UserProfile", "Account")
+				@Html.ActionLink(HttpContext.Current.User.Identity.Name, "Profile", "Account")
 			</li>
 			<li>@Html.ActionLink("Logout", "Logout", "Account")</li>
 		</ul>
@@ -11,8 +11,14 @@
 }
 else
 {
-	<ul class="nav navbar-nav navbar-right" >
-	<li> @Html.ActionLink("Register", "Register", "Account") </li>
-	<li> @Html.ActionLink("Login", "Login", "Account") </li>
-	</ul>
+    <div class="navbar-right collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li>
+                @Html.ActionLink("Login", "Login", "Account")
+            </li>
+            <li>
+                @Html.ActionLink("Register", "Register", "Account")
+            </li>
+        </ul>
+    </div>
 }

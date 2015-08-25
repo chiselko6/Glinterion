@@ -14,7 +14,7 @@ namespace Glinterion.DAL
         public GlinterionContext()
             : base("GlinterionContext")
         {
-            
+            Configuration.ProxyCreationEnabled = false; 
         }
 
         public DbSet<Photo> Photos { get; set; }
@@ -24,6 +24,8 @@ namespace Glinterion.DAL
         public DbSet<Account> Accounts { get; set; }
 
         public DbSet<Role> Roles { get; set; }
+
+        public DbSet<AccountSerial> AccountsSerials { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -1,35 +1,26 @@
 angular.module("glinterionServices").service("UploadPhotoService", UploadPhotoService);
 
 UploadPhotoService.$inject = [
-	$http,
-	$q
+	$http
 ];
 
-function UploadPhotoService() {
-
-    var serv = {};
-    serv.uploadFile = function (file) {
-        var formData = new FormData();
-        formData.append("file", file);
-  
-        var defer = $q.defer();
-        $http.post("/Home/UploadFile", formData,
-            {
-                withCredentials: true,
-                headers: { 'Content-Type': undefined },
-                transformRequest: angular.identity
-            })
-        .success(function (d) {
-            defer.resolve(d);
+function UploadPhotoService($http) {
+    this.uploadFileToUrl = function(file, uploadUrl){
+        var uploadUrl = "../../api/photos/uploadAvatar";
+        var fd = new FormData();
+        fd.append('file', file);
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
         })
-        .error(function () {
-            defer.reject("File Upload Failed!");
+        .success(function(){
+
+        })
+        .error(function(){
+
         });
-
-        return defer.promise;
-
     }
-    return serv;
+}]);
 
     //---------------------------------------------
     //End of Image Upload and Insert record

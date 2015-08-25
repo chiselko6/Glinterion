@@ -1,6 +1,7 @@
 angular.module("glinterion", [
         "ngRoute",
         "ngResource",
+        "auth0",
         "glinterionControllers",
         "glinterionServices",
         "glinterionDirectives",
@@ -8,7 +9,8 @@ angular.module("glinterion", [
         "angularFileUpload"
     ])
     .config([
-        "$routeProvider", "$compileProvider",
+        "$routeProvider", 
+        "$compileProvider",
         config
     ]);
 
@@ -22,11 +24,15 @@ function config($routeProvider, $compileProvider) {
             templateUrl: "partials/profile.html",
             controller: "ProfileController"
         }).
+        when("/profile/:userLogin/account", {
+            templateUrl: "partials/account.html",
+            controller: "AccountController"
+        }).
         otherwise({
             redirectTo: "/home"
         });
     $compileProvider.imgSrcSanitizationWhitelist = /^\s*(https?|ftp|file|blob):|data:image\//;
 
     // allows to use natural URLs instead of unnatural hashbang URLs
-    //$locationProvider.html5Mode(true);
+    // $locationProvider.html5Mode(true);
 }

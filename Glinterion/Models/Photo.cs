@@ -20,7 +20,7 @@ namespace Glinterion.Models
 
         public string Description { get; set; }
 
-        public double Rating { get; set; }
+        public double? Rating { get; set; }
 
         [Required]
         // in MB
@@ -28,8 +28,7 @@ namespace Glinterion.Models
 
         public int UserId { get; set; }
 
-        [ForeignKey("UserId")]
-        [InverseProperty("Photos")]
-        public User User { get; set; }
+        //[InverseProperty("Photos")]
+        public virtual User User { get; set; }
     }
 }

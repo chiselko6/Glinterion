@@ -55,6 +55,33 @@ namespace Glinterion.DAL.Initializers
                 }
             };
 
+            var accountSerials = new List<AccountSerial>
+            {
+                new AccountSerial
+                {
+                    Account = accounts[0],
+                    Serial = "123456qwerty123456"
+                },
+
+                new AccountSerial
+                {
+                    Account = accounts[0],
+                    Serial = "qwerty123456qwerty"
+                },
+
+                new AccountSerial
+                {
+                    Account = accounts[1],
+                    Serial = "qwertyqwertyqwerty"
+                },
+
+                new AccountSerial
+                {
+                    Account = accounts[1],
+                    Serial = "123456123456123456"
+                }
+            };
+
 
             //roles[0].Users.Add(users[0]);
             //roles[1].Users.Add(users[1]);
@@ -191,6 +218,7 @@ namespace Glinterion.DAL.Initializers
 
             roles.ForEach(role => context.Roles.Add(role));
             accounts.ForEach(account => context.Accounts.Add(account));
+            accountSerials.ForEach(a => context.AccountsSerials.Add(a));
             //users.ForEach(user => context.Users.Add(user));
             //photos.ForEach(photo => context.Photos.Add(photo));
 

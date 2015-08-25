@@ -17,6 +17,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Mvc;
+using System.Web.Security;
 using System.Web.UI.WebControls;
 using Glinterion.DAL;
 using Glinterion.DAL.IRepository;
@@ -50,6 +51,7 @@ namespace Glinterion.Controllers
         }
         
         // GET: api/Photos
+        [System.Web.Http.Authorize(Roles = "admin")]
         public IEnumerable<Photo> GetPhotos()
         {
             return photosDb.GetAll();
@@ -57,40 +59,37 @@ namespace Glinterion.Controllers
 
         public IEnumerable<Photo> UserPhotos()
         {
-            string userLogin = "RomanFrom710";
-            return photosDb.GetAll(photo => photo.User.Login == userLogin);
+            var userName = User.Identity.Name;
+            return photosDb.GetAll(photo => photo.User.Login == userName);
         }
 
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/photos/totalsize")]
         public double TotalSize()
         {
-            string userLogin = "RomanFrom710";
-            var photos = photosDb.GetAll(photo => photo.User.Login == userLogin);
+            var userName = User.Identity.Name;
+            var photos = photosDb.GetAll(photo => photo.User.Login == userName);
             if (photos == null)
             {
                 return 0;
             }
             photos = photos.OrderBy(photo => photo.PhotoId);
-            return (photos == null ? 0 : photos.Sum(photo => photo.Size));
+            return photos.Sum(photo => photo.Size);
         }
 
         [System.Web.Http.HttpGet]
         public double TotalNumber()
         {
-            string userLogin = "RomanFrom710";
-            var photos = photosDb.GetAll( photo => photo.User.Login == userLogin);
-            if (photos == null)
-            {
-                return 0;
-            }
-            return photos.OrderBy(photo => photo.PhotoId).Count();
+            var userName = User.Identity.Name;
+            var photos = photosDb.GetAll( photo => photo.User.Login == userName);
+            return photos == null ? 0 : photos.OrderBy(photo => photo.PhotoId).Count();
         }
 
         // GET: api/Photos
         public IEnumerable<Photo> GetPhotos(int pageNumber, int photosPerPage)
         {
-            var photos = photosDb.GetAll(photo => photo.User.Login == "RomanFrom710");
+            var userName = User.Identity.Name;
+            var photos = photosDb.GetAll(photo => photo.User.Login == userName);
             if (photos == null)
             {
                 return null;
@@ -107,52 +106,63 @@ namespace Glinterion.Controllers
         }
 
             // GET: api/Photos/5
-        [ResponseType(typeof(Photo))]
-        public IHttpActionResult GetPhoto(int id)
-        {
-            Photo photo = photosDb.GetById(id);
-            if (photo == null)
-            {
-                return NotFound();
-            }
+        //[ResponseType(typeof(Photo))]
+        //public IHttpActionResult GetPhoto(int id)
+        //{
+        //    Photo photo = photosDb.GetById(id);
+        //    if (photo == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(photo);
-        }
+        //    return Ok(photo);
+        //}
 
         // PUT: api/Photos/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutPhoto(int id, Photo photo)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[ResponseType(typeof(void))]
+        //public IHttpActionResult PutPhoto(int id, Photo photo)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            if (id != photo.PhotoId)
-            {
-                return BadRequest();
-            }
+        //    if (id != photo.PhotoId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            photosDb.Update(photo);
+        //    photosDb.Update(photo);
 
-            try
-            {
-                photosDb.Save();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PhotoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        photosDb.Save();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!PhotoExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return StatusCode(HttpStatusCode.NoContent);
-        }
+        //    return StatusCode(HttpStatusCode.NoContent);
+        //}
+
+        //[System.Web.Http.HttpPost]
+        //public void UploadAvatar(HttpPostedFileBase file)
+        //{
+        //    var userName = User.Identity.Name;
+        //    var user = usersDb.Get(u => u.Login == userName);
+        //    if (file != null)
+        //    {
+        //        photoSaveService.Save(file.InputStream, user, null, null, file.FileName, true);
+        //    }
+        //}
 
         [System.Web.Http.HttpPost]// This is from System.Web.Http, and not from System.Web.Mvc
         public async Task<HttpResponseMessage> Upload()
@@ -163,26 +173,19 @@ namespace Glinterion.Controllers
             }
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
-            // RomanFrom710
             var userName = User.Identity.Name;
             var user = usersDb.Get(u => u.Login == userName);
             try
             {
                 IEnumerable<string> descriptions = new List<string>();
-                string description = (Request.Headers.TryGetValues("description", out descriptions) ? descriptions.First() : null);
-                
+                var description = (Request.Headers.TryGetValues("description", out descriptions) ? descriptions.First() : null);
                 var ratings = Request.Headers.GetValues("rating");
-                double rating = (ratings == null ? 0 : (ratings.First() == "null" ? 0 : Double.Parse(Request.Headers.GetValues("rating").First())));
-
-                // provider.Contents[0] supposed to be description
-                //string description = await provider.Contents[0].ReadAsStringAsync();
-                // provider.Contents[1] supposed to be rating
-                //double rating = Double.Parse(await provider.Contents[1].ReadAsStringAsync());
+                var rating = (ratings == null ? 0 : (ratings.First() == "null" ? 0 : Double.Parse(Request.Headers.GetValues("rating").First())));
 
                 var dataStream = await provider.Contents[0].ReadAsStreamAsync();
                 var fileExtension = Request.Headers.GetValues("fileExtension").FirstOrDefault();
                 var size = dataStream.Length;
-                photoSaveService.Save(dataStream, user, description, rating, fileExtension);
+                photoSaveService.Save(dataStream, user, description, rating, fileExtension, false);
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent("Successful upload", Encoding.UTF8, "text/plain");
                 response.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(@"text/html");
@@ -196,16 +199,16 @@ namespace Glinterion.Controllers
         }
         
         // DELETE: api/photos
-        [ResponseType(typeof(Photo))]
-        public IHttpActionResult DeletePhoto(int id)
-        {
-            Photo photo = photosDb.GetById(id);
+        //[ResponseType(typeof(Photo))]
+        //public IHttpActionResult DeletePhoto(int id)
+        //{
+        //    Photo photo = photosDb.GetById(id);
             
-            photosDb.Delete(photo);
-            photosDb.Save();
+        //    photosDb.Delete(photo);
+        //    photosDb.Save();
 
-            return Ok(photo);
-        }
+        //    return Ok(photo);
+        //}
 
         private bool PhotoExists(int id)
         {

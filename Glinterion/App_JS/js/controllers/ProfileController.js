@@ -3,33 +3,46 @@ angular.module("glinterionControllers").controller("ProfileController", ProfileC
 ProfileController.$inject = [
 	"$scope",
 	"$routeParams", 
-	"PhotosDeliveryService",
+	"ObjectDeliveryService",
 	"PhotosPopupService",
 	"formDataObject",
 	"FileUploader",
-	"$timeout"
+	"$timeout",
+	"auth"
 ];
 
-function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupService, formDataObject, FileUploader, $timeout) {
+function ProfileController($scope, $routeParams, ObjectDelivery, PhotosPopupService, formDataObject, FileUploader, $timeout, auth) {
 	var profile = this;
 
 	profile.photos = {};
 	profile.user = {};
+
+	// auth.profilePromise.then(function(profile) {
+	//     profile.profile = this.profile;
+	// });
+	//   // Or using the object
+	// profile.profile = auth.profile;
+
 
 	profile.photos.photosPage = 1;
 	profile.photos.photosPerPage = 5;
 	profile.photos.pages = 1;
 
 	profile.user.login = $routeParams.userLogin;
-	profile.user.accountType = "Simple";
+	ObjectDelivery.getUser(profile.user.login).success(function(data) {
+		profile.user.account = data;
+	});
+	// .$promise.then(function(data) {
+	// 	 = data;
+	// });
 	//profile.user.Id = $routeParams.userId;
 
-	PhotosDelivery.getTotalNumber().success(function(data) {
+	ObjectDelivery.getTotalNumber().success(function(data) {
 		profile.user.photosNumber = data;
 		profile.photos.pages = getTotalPages();
 	});
-	PhotosDelivery.getTotalSize().success(function(data) {
-		profile.user.totalSize = +data.toFixed(2);
+	ObjectDelivery.getTotalSize().success(function(data) {
+		profile.user.totalSize = +(+data.toFixed(2));
 	});
 
 	function getTotalPages() {
@@ -41,7 +54,7 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
 	}
 
 	(profile.selectPage = function() {
-		profile.user.photos = PhotosDelivery.getPhotos(profile.photos.photosPage, profile.photos.photosPerPage).query();
+		profile.user.photos = ObjectDelivery.getPhotos(profile.photos.photosPage, profile.photos.photosPerPage).query();
 
 		profile.user.photos.$promise.then(function(photos) {
 			var prefix = "http://" + location.host + "/";
@@ -83,7 +96,8 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
     };
 
 	profile.uploader.onSuccessItem = function(item, response, status, headers) {
-		profile.user.totalSize += (+headers["size"] / 1024 / 1024).toFixed(2);
+		profile.user.totalSize += +((+headers["size"] / 1024 / 1024).toFixed(2));
+		profile.user.totalSize = +(profile.user.totalSize.toFixed(2));
 		profile.user.photosNumber++;
 		profile.photos.pages = getTotalPages();
 		profile.selectPage();
@@ -92,4 +106,12 @@ function ProfileController($scope, $routeParams, PhotosDelivery, PhotosPopupServ
     profile.abortUpload = function (index) {
         profile.upload[index].abort();
     }
+
+    profile.uploadFile = function(){
+        var file = profile.myFile;
+        // console.log('file is ' );
+        // console.dir(file);
+        // var uploadUrl = "/";
+        fileUpload.uploadFileToUrl(file);
+    };
 }

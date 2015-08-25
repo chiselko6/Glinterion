@@ -21,10 +21,9 @@ namespace Glinterion.Services.PhotoServices
             usersDb = uof.Repository<User>();
         }
 
-        public async void Save(Stream dataStream, User user, string photoDescription, double rating, string fileExtension)
+        public async void Save(Stream dataStream, User user, string photoDescription, double? rating, string fileExtension, bool isAvatar)
         {
             //var allPhotosCount = photosDb.GetAll().Count();
-            var userId = user.UserId;
             
             //int photoNumber = photosDb.GetAll().AsEnumerable().Count(ph => ph.User.UserId == userId) + 1;
             //var dataStream = await file.ReadAsStreamAsync();
@@ -65,8 +64,11 @@ namespace Glinterion.Services.PhotoServices
                 SrcPreview = uploadFolderPreview,
                 //UserId = user.UserId,
                 //PhotoId = 1
-
             };
+            //if (isAvatar)
+            //{
+            //    user.Avatar = photo;
+            //}
             photosDb.Add(photo);
             photosDb.Save();
         }

@@ -16,13 +16,18 @@ namespace Glinterion.Models
         public string Login { get; set; }
 
         public int RoleId { get; set; }
+
+        //public int AvatarId { get; set; }
         
         [Required]
         public string Email { get; set; }
 
-        [ForeignKey("RoleId")]
         [InverseProperty("Users")]
         public virtual Role Role { get; set; }
+
+        //[ForeignKey("AvatarId")]
+        //[InverseProperty("User")]
+        //public virtual Photo Avatar { get; set; }
 
         public int AccountId { get; set; }
 
@@ -35,7 +40,6 @@ namespace Glinterion.Models
         [Required]
         public string Password { get; set; }
 
-        [ForeignKey("AccountId")]
         [InverseProperty("Users")]
         public virtual Account Account { get; set; }
 
