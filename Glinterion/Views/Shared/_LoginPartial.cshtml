@@ -1,10 +1,12 @@
 ﻿@if (Request.IsAuthenticated)
 {
+    
+    var link = "/home/app#/profile/" + HttpContext.Current.User.Identity.Name;
 	<div class="navbar-right">
 		<ul class="nav navbar-nav navbar-right">
-			<li>
-				@Html.ActionLink(HttpContext.Current.User.Identity.Name, "Profile", "Account")
-			</li>
+		    <li>
+		        <a href=@link>@HttpContext.Current.User.Identity.Name</a>
+		    </li>
 			<li>@Html.ActionLink("Logout", "Logout", "Account")</li>
 		</ul>
 	</div>

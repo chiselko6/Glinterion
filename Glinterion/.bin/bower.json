@@ -10,11 +10,13 @@
     "tests"
   ],
   "dependencies": {
-    "angular-route": "~1.4.3",
-    "angular-resource": "~1.4.4",
+    "angular": "~1.4.4",
     "angular-file-upload": "~2.1.1",
+    "angular-resource": "~1.4.4",
+    "angular-route": "~1.4.3",
     "bootstrap": "~3.3.5",
-    "angular": "~1.4.4"
+    "Chart.js": "chartjs#~1.0.2",
+    "jquery": "~2.1.4"
   },
   "resolutions": {
     "angular": "~1.2.11"

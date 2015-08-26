@@ -13,11 +13,24 @@ namespace Glinterion
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //routes.MapRoute(
+            //    name: "AngularProfile",
+            //    url: "profile/{*.}",
+            //    defaults: new { controller = "Home", action = "Index" }
+            //    );
+
+            //routes.MapRoute(
+            //    name: "AngularHome",
+            //    url: "home",
+            //    defaults: new {controller = "Home", action = "Index"}
+            //    );
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
         }
     }
 }

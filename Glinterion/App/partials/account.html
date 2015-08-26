@@ -1,0 +1,25 @@
+<div class="account-changing" ng-controller="AccountController as account">
+	<div class="account-header">
+		You can enter coupon number here:	
+	</div>
+
+	<div class="account-body">
+		<div class="form-data">
+			<input type="text" maxlength="6" ng-model="account.serial.part1"/>
+			-
+			<input type="text" maxlength="6" ng-model="account.serial.part2"/>
+			-
+			<input type="text" maxlength="6" ng-model="account.serial.part3"/>
+			<button type="button" class="btn btn-submit" ng-click="account.enter()">Enter</button>
+			<!-- <span ng-show="account.isAccepted"><i class="glyphicon glyphicon-ok"></i></span> -->
+			<span ng-show="account.isRejected"><i class="glyphicon glyphicon-remove"></i></span>
+			<span ng-show="account.isAccepted"><i class="glyphicon glyphicon-ok"></i></span>
+			<span ng-show="account.isRejected" ng-bind="account.failureReason" class="danger"></span>
+		</div>
+		<a ng-href="#/profile/{{account.userName}}"><button class="btn btn-primary">Back</button></a>
+	</div>
+
+	<div class="account-footer">
+		
+	</div>
+</div>

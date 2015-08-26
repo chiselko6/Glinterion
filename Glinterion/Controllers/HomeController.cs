@@ -18,7 +18,10 @@ namespace Glinterion.Controllers
         {
             return View();
         }
-        
-        
+
+        public ActionResult App()
+        {
+            return View();
+        }
     }
 }

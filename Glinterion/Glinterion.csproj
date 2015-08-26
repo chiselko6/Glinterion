@@ -391,6 +391,24 @@
     <Content Include=".bin\bower_components\bootstrap\js\tooltip.js" />
     <Content Include=".bin\bower_components\bootstrap\js\transition.js" />
     <Content Include=".bin\bower_components\bootstrap\package.js" />
+    <Content Include=".bin\bower_components\chartjs\.gitignore" />
+    <Content Include=".bin\bower_components\chartjs\Chart.js" />
+    <Content Include=".bin\bower_components\chartjs\Chart.min.js" />
+    <Content Include=".bin\bower_components\chartjs\gulpfile.js" />
+    <Content Include=".bin\bower_components\chartjs\samples\bar.html" />
+    <Content Include=".bin\bower_components\chartjs\samples\doughnut.html" />
+    <Content Include=".bin\bower_components\chartjs\samples\line-customTooltips.html" />
+    <Content Include=".bin\bower_components\chartjs\samples\line.html" />
+    <Content Include=".bin\bower_components\chartjs\samples\pie-customTooltips.html" />
+    <Content Include=".bin\bower_components\chartjs\samples\pie.html" />
+    <Content Include=".bin\bower_components\chartjs\samples\polar-area.html" />
+    <Content Include=".bin\bower_components\chartjs\samples\radar.html" />
+    <Content Include=".bin\bower_components\chartjs\src\Chart.Bar.js" />
+    <Content Include=".bin\bower_components\chartjs\src\Chart.Core.js" />
+    <Content Include=".bin\bower_components\chartjs\src\Chart.Doughnut.js" />
+    <Content Include=".bin\bower_components\chartjs\src\Chart.Line.js" />
+    <Content Include=".bin\bower_components\chartjs\src\Chart.PolarArea.js" />
+    <Content Include=".bin\bower_components\chartjs\src\Chart.Radar.js" />
     <Content Include=".bin\bower_components\jquery\dist\jquery.js" />
     <Content Include=".bin\bower_components\jquery\dist\jquery.min.js" />
     <Content Include=".bin\bower_components\jquery\MIT-LICENSE.txt" />
@@ -477,18 +495,38 @@
     <Content Include=".bin\bower_components\jquery\src\var\support.js" />
     <Content Include=".bin\bower_components\jquery\src\var\toString.js" />
     <Content Include=".bin\bower_components\jquery\src\wrap.js" />
-    <Content Include="App_JS\css\magnific-popup.css" />
-    <Content Include="App_JS\css\profile.css" />
-    <Content Include="App_JS\js\angular-magnific-popup-directive.js" />
-    <Content Include="App_JS\js\directives\directivesModule.js" />
-    <Content Include="App_JS\js\directives\ngThumb.js" />
-    <Content Include="App_JS\js\filters\filtersModule.js" />
-    <Content Include="App_JS\js\filters\rangeFilter.js" />
-    <Content Include="App_JS\js\jquery.magnific-popup.js" />
-    <Content Include="App_JS\js\main.js" />
-    <Content Include="App_JS\js\profile.js" />
-    <Content Include="App_JS\js\services\PhotosPopupService.js" />
-    <Content Include="App_JS\js\services\UploadPhotoService.js" />
+    <Content Include="App\css\magnific-popup.css" />
+    <Content Include="App\css\profile.css" />
+    <Content Include="App\index.html" />
+    <Content Include="App\js\angular-magnific-popup-directive.js" />
+    <Content Include="App\js\app.js" />
+    <Content Include="App\js\controllers\AccountController.js" />
+    <Content Include="App\js\controllers\controllersModule.js" />
+    <Content Include="App\js\controllers\HomeController.js" />
+    <Content Include="App\js\controllers\ProfileController.js" />
+    <Content Include="App\js\directives\directivesModule.js" />
+    <Content Include="App\js\directives\fileModelDirective.js" />
+    <Content Include="App\js\directives\ngThumb.js" />
+    <Content Include="App\js\filters\filtersModule.js" />
+    <Content Include="App\js\filters\rangeFilter.js" />
+    <Content Include="App\js\jquery.magnific-popup.js" />
+    <Content Include="App\js\main.js" />
+    <Content Include="App\js\profile.js" />
+    <Content Include="App\js\services\AuthService.js" />
+    <Content Include="App\js\services\ChartService.js" />
+    <Content Include="App\js\services\ColorConverterService.js" />
+    <Content Include="App\js\services\CouponCheckingService.js" />
+    <Content Include="App\js\services\ObjectDeliveryService.js" />
+    <Content Include="App\js\services\PhotosDeliveryService.js" />
+    <Content Include="App\js\services\PhotosPopupService.js" />
+    <Content Include="App\js\services\servicesModule.js" />
+    <Content Include="App\js\services\SharingService.js" />
+    <Content Include="App\js\services\UploadPhotoService.js" />
+    <Content Include="App\partials\account.html" />
+    <Content Include="App\partials\home.html" />
+    <Content Include="App\partials\profile.html" />
+    <Content Include="bin\Glinterion.dll" />
+    <Content Include="bin\Glinterion.pdb" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -517,10 +555,6 @@
     <Content Include="images\user_chiselko6\preview\img7.jpg" />
     <Content Include="images\user_chiselko6\preview\img8.jpg" />
     <Content Include="images\user_chiselko6\preview\img9.jpg" />
-    <Content Include="App_JS\index.html" />
-    <Content Include="App_JS\js\controllers\controllersModule.js" />
-    <Content Include="App_JS\js\controllers\HomeController.js" />
-    <Content Include="App_JS\js\app.js" />
     <None Include=".bin\bower.cmd" />
     <Content Include=".bin\bower_components\angular-route\.bower.json" />
     <Content Include=".bin\bower_components\angular-route\angular-route.min.js.map" />
@@ -747,13 +781,23 @@
     <Content Include=".bin\bower_components\auth0.js\README.md" />
     <Content Include=".bin\bower_components\auth0.js\test\https_test_certs\server.crt" />
     <Content Include=".bin\bower_components\auth0.js\test\https_test_certs\server.key" />
+    <Content Include=".bin\bower_components\chartjs\.bower.json" />
+    <Content Include=".bin\bower_components\chartjs\.travis.yml" />
+    <Content Include=".bin\bower_components\chartjs\bower.json" />
+    <Content Include=".bin\bower_components\chartjs\CONTRIBUTING.md" />
+    <Content Include=".bin\bower_components\chartjs\docs\00-Getting-Started.md" />
+    <Content Include=".bin\bower_components\chartjs\docs\01-Line-Chart.md" />
+    <Content Include=".bin\bower_components\chartjs\docs\02-Bar-Chart.md" />
+    <Content Include=".bin\bower_components\chartjs\docs\03-Radar-Chart.md" />
+    <Content Include=".bin\bower_components\chartjs\docs\04-Polar-Area-Chart.md" />
+    <Content Include=".bin\bower_components\chartjs\docs\05-Pie-Doughnut-Chart.md" />
+    <Content Include=".bin\bower_components\chartjs\docs\06-Advanced.md" />
+    <Content Include=".bin\bower_components\chartjs\docs\07-Notes.md" />
+    <Content Include=".bin\bower_components\chartjs\LICENSE.md" />
+    <Content Include=".bin\bower_components\chartjs\package.json" />
+    <Content Include=".bin\bower_components\chartjs\README.md" />
     <None Include=".bin\git.cmd" />
     <None Include=".bin\node.cmd" />
-    <Content Include="App_JS\js\controllers\ProfileController.js" />
-    <Content Include="App_JS\js\services\PhotosDeliveryService.js" />
-    <Content Include="App_JS\js\services\servicesModule.js" />
-    <Content Include="App_JS\partials\home.html" />
-    <Content Include="App_JS\partials\profile.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
@@ -797,6 +841,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Views\Home\App.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -814,10 +859,6 @@
     <ProjectReference Include="..\Glinterion.API\Glinterion.API.csproj">
       <Project>{8e67c5da-f2e3-480d-beb5-4364a5db5274}</Project>
       <Name>Glinterion.API</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Glinterion.App\Glinterion.App.csproj">
-      <Project>{1c7cbcfc-873e-4d06-9ce3-df9e954d188f}</Project>
-      <Name>Glinterion.App</Name>
     </ProjectReference>
     <ProjectReference Include="..\Glinterion.DataAccess\Glinterion.DataAccess.csproj">
       <Project>{dedca7fd-950f-41bd-a828-87bf9e745f88}</Project>

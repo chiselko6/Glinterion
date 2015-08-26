@@ -42,7 +42,7 @@ namespace Glinterion.Controllers
                 return View();
             }
             FormsAuthentication.SetAuthCookie(model.Login, false);
-            return Redirect("/App_JS/index.html#/profile/" + model.Login);
+            return RedirectToAction("App", "Home");
         }
 
         [HttpGet]
@@ -72,14 +72,14 @@ namespace Glinterion.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return Redirect("/App_JS/index.html#/profile/" + model.Login);
+            return RedirectToAction("App", "Home");
         }
 
-        [Authorize]
-        public new ActionResult Profile()
-        {
-            return Redirect("/App_JS/index.html#/profile/" + User.Identity.Name);
-        }
+        //[Authorize]
+        //public new ActionResult Profile()
+        //{
+        //    return Redirect("/App_JS/index.html#/profile/" + User.Identity.Name);
+        //}
 
         [Authorize]
         public ActionResult Logout()

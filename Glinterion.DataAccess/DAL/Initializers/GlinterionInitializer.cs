@@ -11,7 +11,7 @@ using Glinterion.Models;
 
 namespace Glinterion.DAL.Initializers
 {
-    public class GlinterionInitializer : CreateDatabaseIfNotExists<GlinterionContext>
+    public class GlinterionInitializer : DropCreateDatabaseAlways<GlinterionContext>
     {
         protected override void Seed(GlinterionContext context)
         {
@@ -53,7 +53,7 @@ namespace Glinterion.DAL.Initializers
                     Color = Color.Red,
                     Duration = new TimeSpan(30, 0, 0, 0),
                     Users = new List<User>(),
-                    MaxSize = null
+                    MaxSize = 999
                 }
             };
 
