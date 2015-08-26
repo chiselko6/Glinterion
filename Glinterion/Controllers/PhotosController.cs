@@ -185,11 +185,7 @@ namespace Glinterion.Controllers
                 var dataStream = await provider.Contents[0].ReadAsStreamAsync();
                 var fileExtension = Request.Headers.GetValues("fileExtension").FirstOrDefault();
                 var size = dataStream.Length;
-                photoSaveService.Save(dataStream, user, description, rating, fileExtension, false);
-                var response = Request.CreateResponse(HttpStatusCode.OK);
-                response.Content = new StringContent("Successful upload", Encoding.UTF8, "text/plain");
-                response.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(@"text/html");
-                response.Content.Headers.Add("size", size.ToString());
+                var response = await photoSaveService.Save(dataStream, user, description, rating, fileExtension, false);
                 return response;
             }
             catch (Exception e)

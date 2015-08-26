@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Common.CommandTrees;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
@@ -43,7 +45,6 @@ namespace Glinterion.DAL.Repository
 
         public void Add(TEntity entity)
         {
-            var entities = db.AsEnumerable();
             db.Add(entity);
         }
 
@@ -59,7 +60,22 @@ namespace Glinterion.DAL.Repository
 
         public void Save()
         {
-            context.SaveChanges();
+            //try
+            //{
+                context.SaveChanges();
+            //}
+            //catch (DbEntityValidationException dbEx)
+            //{
+            //    foreach (var validationErrors in dbEx.EntityValidationErrors)
+            //    {
+            //        foreach (var validationError in validationErrors.ValidationErrors)
+            //        {
+            //            Trace.TraceInformation("Property: {0} Error: {1}",
+            //                                    validationError.PropertyName,
+            //                                    validationError.ErrorMessage);
+            //        }
+            //    }
+            //}
         }
     }
 }

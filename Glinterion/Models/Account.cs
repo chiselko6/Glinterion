@@ -22,11 +22,13 @@ namespace Glinterion.Models
         [NotMapped]
         public TimeSpan Duration { get { return TimeSpan.FromTicks(DurationTicks ?? 0); } set { DurationTicks = value.Ticks; } }
 
+        public double? MaxSize { get; set; }
+
         // to be colored on profile page
         public Color Color { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
 
-        public virtual ICollection<string> Serials { get; set; } 
+        public virtual ICollection<AccountSerial> Serials { get; set; } 
     }
 }

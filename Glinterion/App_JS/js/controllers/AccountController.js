@@ -1,7 +1,8 @@
 angular.module("glinterionControllers").controller("AccountController", accountController);
 
 accountController.$inject = [
-	"CouponCheckingService"
+	"CouponCheckingService",
+	"SharingService"
 ];
 
 function accountController(CouponCheckingService) {
@@ -22,10 +23,10 @@ function accountController(CouponCheckingService) {
 	    			account.failureReason = "You entered invalid coupon number!";
     			}
     			else {
+    				// CouponCheckingService.updateAccount(data);
 	    			account.account = data;
 	    			account.isRejected = false;
 	    			account.isAccepted = true;
-	    			
     			}
     		})
     		.error(function(reason) {

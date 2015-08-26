@@ -3,6 +3,7 @@ angular.module("glinterionControllers").controller("ProfileController", ProfileC
 ProfileController.$inject = [
 	"$scope",
 	"$routeParams", 
+	"SharingService",
 	"ObjectDeliveryService",
 	"PhotosPopupService",
 	"formDataObject",
@@ -11,11 +12,40 @@ ProfileController.$inject = [
 	"auth"
 ];
 
-function ProfileController($scope, $routeParams, ObjectDelivery, PhotosPopupService, formDataObject, FileUploader, $timeout, auth) {
+function ProfileController($scope, $routeParams, SharingService, ObjectDelivery, PhotosPopupService, formDataObject, FileUploader, $timeout, auth) {
 	var profile = this;
 
 	profile.photos = {};
 	profile.user = {};
+
+	$scope.$watch(function() { return SharingService.isChanged; },
+		function() {
+			update();
+		});
+
+	function update() {
+		ObjectDelivery.getUser(profile.user.login).success(function(data) {
+			profile.user.account = data;
+		});
+		ObjectDelivery.getTotalNumber().success(function(data) {
+			profile.user.photosNumber = data;
+			profile.photos.pages = getTotalPages();
+		});
+		ObjectDelivery.getTotalSize().success(function(data) {
+			profile.user.totalSize = +(+data.toFixed(2));
+		});
+		ObjectDelivery.getPhotos(profile.photos.photosPage, profile.photos.photosPerPage).query().$promise.then(function(photos) {
+			var prefix = "http://" + location.host;
+			// in order to set full path to files
+			photos.forEach(function(photo) {
+				// just here: absolute urls are not allowed for file system
+				photo.SrcPreview = prefix + photo.SrcPreview.slice(1);
+				photo.SrcOriginal = prefix + photo.SrcOriginal.slice(1);
+			});
+			// we don't pass additional parameter as 'gallery-photo-link' to <a> because ng-class doesn't have binding to property
+			PhotosPopupService($scope, photos);
+		});
+	}
 
 	// auth.profilePromise.then(function(profile) {
 	//     profile.profile = this.profile;
@@ -57,11 +87,12 @@ function ProfileController($scope, $routeParams, ObjectDelivery, PhotosPopupServ
 		profile.user.photos = ObjectDelivery.getPhotos(profile.photos.photosPage, profile.photos.photosPerPage).query();
 
 		profile.user.photos.$promise.then(function(photos) {
-			var prefix = "http://" + location.host + "/";
+			var prefix = "http://" + location.host;
 			// in order to set full path to files
 			photos.forEach(function(photo) {
-				photo.SrcPreview = prefix + photo.SrcPreview;
-				photo.SrcOriginal = prefix + photo.SrcOriginal;
+				// just here: absolute urls are not allowed for file system
+				photo.SrcPreview = prefix + photo.SrcPreview.slice(1);
+				photo.SrcOriginal = prefix + photo.SrcOriginal.slice(1);
 			});
 			// we don't pass additional parameter as 'gallery-photo-link' to <a> because ng-class doesn't have binding to property
 			PhotosPopupService($scope, photos);
@@ -96,10 +127,13 @@ function ProfileController($scope, $routeParams, ObjectDelivery, PhotosPopupServ
     };
 
 	profile.uploader.onSuccessItem = function(item, response, status, headers) {
-		profile.user.totalSize += +((+headers["size"] / 1024 / 1024).toFixed(2));
-		profile.user.totalSize = +(profile.user.totalSize.toFixed(2));
-		profile.user.photosNumber++;
-		profile.photos.pages = getTotalPages();
+		ObjectDelivery.getTotalSize().success(function(data) {
+			profile.user.totalSize = +(+data.toFixed(2));
+		});
+		ObjectDelivery.getTotalNumber().success(function(data) {
+			profile.user.photosNumber = data;
+			profile.photos.pages = getTotalPages();
+		});
 		profile.selectPage();
 	}
 

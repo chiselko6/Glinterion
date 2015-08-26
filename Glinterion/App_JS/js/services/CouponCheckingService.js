@@ -11,6 +11,11 @@ function couponCheckingService($http) {
 	}
 
 	this.updateAccount = function(account) {
+		// return $http({
+		// 	url: "../../api/accounts/update",
+		// 	method: "post",
+		// 	data: { account: _account }
+		// });
 		return $http.post("../../api/accounts/update", {params: {account: account}});
 	}
 }

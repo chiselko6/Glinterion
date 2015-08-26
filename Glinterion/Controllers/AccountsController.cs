@@ -122,25 +122,18 @@ namespace Glinterion.Controllers
         [System.Web.Http.Authorize]
         [System.Web.Http.Route("api/accounts/check")]
         [System.Web.Http.HttpGet]
-        public Account Check(string serial)
-        {
-            // TODO:
-            var accountSerial = accountsSerialsDb.Get(ser => ser.Serial == serial);
-            if (accountSerial == null) return null;
-            var account = accountsDb.GetById(accountSerial.AccountId);
-            return account;
-        }
-
-        [System.Web.Http.Authorize]
-        [System.Web.Http.Route("api/accounts/update")]
-        [System.Web.Http.HttpPost]
-        public void Update(Account account)
+        public HttpResponseMessage Check(string serial)
         {
             var userName = User.Identity.Name;
             var user = usersDb.Get(u => u.Login == userName);
-            user.Account = account;
+            // TODO:
+            var accountSerial = accountsSerialsDb.Get(ser => ser.Serial == serial);
+            if (accountSerial == null) return new HttpResponseMessage(HttpStatusCode.Forbidden);
+            //var account = accountSerial.Account;
+            user.AccountId = accountSerial.Account.AccountId;
             usersDb.Update(user);
             usersDb.Save();
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
         private bool AccountExists(int id)

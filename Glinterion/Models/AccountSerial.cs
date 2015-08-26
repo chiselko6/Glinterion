@@ -16,8 +16,10 @@ namespace Glinterion.Models
         [StringLength(maximumLength: 18, MinimumLength = 18)]
         public string Serial { get; set; }
 
+        [Required]
         public int AccountId { get; set; }
 
+        [ForeignKey("AccountId")]
         public virtual Account Account { get; set; }
     }
 }

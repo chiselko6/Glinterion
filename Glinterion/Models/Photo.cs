@@ -26,9 +26,10 @@ namespace Glinterion.Models
         // in MB
         public double Size { get; set; }
 
+        [Required]
         public int UserId { get; set; }
 
-        //[InverseProperty("Photos")]
+        [ForeignKey("UserId")]
         public virtual User User { get; set; }
     }
 }

@@ -125,7 +125,7 @@ namespace Glinterion.Controllers
             // TODO: 
             var userName = User.Identity.Name;
             var user = usersDb.Get(u => u.Login == userName);
-            var account = accountsDb.GetById(user.AccountId);
+            var account = user.Account;
             return account;
         }
 
