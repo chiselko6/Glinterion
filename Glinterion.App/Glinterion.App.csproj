@@ -628,6 +628,12 @@
     <None Include=".bin\git.cmd" />
     <None Include=".bin\node.cmd" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Glinterion.API\Glinterion.API.csproj">
+      <Project>{8e67c5da-f2e3-480d-beb5-4364a5db5274}</Project>
+      <Name>Glinterion.API</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
