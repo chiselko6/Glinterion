@@ -14,11 +14,6 @@ namespace Glinterion.Controllers
             return View();
         }
 
-        public ActionResult Contacts()
-        {
-            return View();
-        }
-
         public ActionResult App()
         {
             return View();
