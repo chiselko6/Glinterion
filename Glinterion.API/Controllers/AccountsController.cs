@@ -9,9 +9,11 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Mvc;
+using Glinterion.Common;
 using Glinterion.DAL;
 using Glinterion.DAL.IRepository;
 using Glinterion.Models;
+using h = System.Web.Http;
 
 namespace Glinterion.Controllers
 {
@@ -30,7 +32,8 @@ namespace Glinterion.Controllers
         }
 
         // GET: api/Accounts
-        [System.Web.Http.Authorize(Roles = "admin")]
+        [RolesAuthorize("admin", "moderator")]
+        [h.Authorize]
         public IQueryable<Account> GetAccounts()
         {
             return accountsDb.GetAll().AsQueryable();
@@ -38,7 +41,8 @@ namespace Glinterion.Controllers
 
         // GET: api/Accounts/5
         [ResponseType(typeof(Account))]
-        [System.Web.Http.Authorize(Roles = "admin")]
+        [RolesAuthorize("admin", "moderator")]
+        [h.Authorize]
         public IHttpActionResult GetAccount(int id)
         {
             Account account = accountsDb.GetById(id);
@@ -52,7 +56,8 @@ namespace Glinterion.Controllers
 
         // PUT: api/Accounts/5
         [ResponseType(typeof(void))]
-        [System.Web.Http.Authorize(Roles = "admin")]
+        [RolesAuthorize("admin", "moderator")]
+        [h.Authorize]
         public IHttpActionResult PutAccount(int id, Account account)
         {
             if (!ModelState.IsValid)
@@ -88,7 +93,8 @@ namespace Glinterion.Controllers
 
         // POST: api/Accounts
         [ResponseType(typeof(Account))]
-        [System.Web.Http.Authorize(Roles = "admin")]
+        [h.Authorize]
+        [RolesAuthorize("admin", "moderator")]
         public IHttpActionResult PostAccount(Account account)
         {
             if (!ModelState.IsValid)
@@ -104,7 +110,8 @@ namespace Glinterion.Controllers
 
         // DELETE: api/Accounts/5
         [ResponseType(typeof(Account))]
-        [System.Web.Http.Authorize(Roles = "admin")]
+        [h.Authorize]
+        [RolesAuthorize("admin", "moderator")]
         public IHttpActionResult DeleteAccount(int id)
         {
             Account account = accountsDb.GetById(id);
@@ -119,18 +126,17 @@ namespace Glinterion.Controllers
             return Ok(account);
         }
 
-        [System.Web.Http.Authorize]
-        [System.Web.Http.Route("api/accounts/check")]
-        [System.Web.Http.HttpGet]
+        [h.Authorize]
+        [h.Route("api/accounts/check")]
+        [h.HttpGet]
         public HttpResponseMessage Check(string serial)
         {
             var userName = User.Identity.Name;
             var user = usersDb.Get(u => u.Login == userName);
-            // TODO:
             var accountSerial = accountsSerialsDb.Get(ser => ser.Serial == serial);
             if (accountSerial == null) return new HttpResponseMessage(HttpStatusCode.Forbidden);
-            //var account = accountSerial.Account;
-            user.AccountId = accountSerial.Account.AccountId;
+            //user.AccountId = accountSerial.Account.AccountId;
+            user.Account = accountSerial.Account;
             usersDb.Update(user);
             usersDb.Save();
             return new HttpResponseMessage(HttpStatusCode.OK);

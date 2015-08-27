@@ -27,6 +27,7 @@ namespace Glinterion
             //);
 
             config.Filters.Add(new AuthorizeAttribute());
+            //config.Filters.Add(new ApplicationAttribute());
         }
     }
 }

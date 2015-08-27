@@ -5,11 +5,9 @@
 			<input id="avatar-input" type="file" multiple enctype="multipart/form-data"/>
 			<button type="button" class="btn btn_submit" ng-show="{{avatar-input}}"></button>
 		</div>
- -->		<div class="user--info">
+ -->	<div class="user--info">
 			<div class="user--login">
-				<div class="user--login">
-					Hello, {{profile.user.login}}
-				</div>
+				Hello, {{profile.user.login}}
 			</div>
 			</br>
 			<div class="user--account">
@@ -19,10 +17,10 @@
 			</br>
 			<div class="user--album-details">
 				<div class="user-album-uploaded">
-					Photos uploaded: {{profile.user.photosNumber}}
+					Photos uploaded: {{profile.user.gallery.photosNumber}}
 				</div>
 				<div class="user-album-totalsize">
-					Size: {{profile.user.totalSize}} / {{profile.user.account.MaxSize}}
+					Size: {{profile.user.gallery.totalSize}} / {{profile.user.account.MaxSize}} MB
 				</div>
 				<canvas id="size" width="100" height="100"></canvas>
 			</div>
@@ -43,13 +41,13 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in profile.uploader.queue">
-                        <td>
+                        <td class="item-photo">
                             <strong>{{ item.file.name }}</strong>
                             <!-- Image preview -->
                             <!--auto height-->
                             <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
                             <!--auto width-->
-                            <div ng-show="profile.uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                            <div ng-show="profile.uploader.isHTML5" ng-thumb="{ file: item._file, height: 100}"></div>
                             <!-- <label ng-attr-for="{{item.$index + 'description'}}" class="sr-only">Description</label> -->
                             <input type="text" ng-model="item.description" ng-attr-id="{{item.$index + 'description'}}" class="form-control"
                             	placeholder="Description">
@@ -58,10 +56,10 @@
                             	placeholder="Rating" max="5" min="0" step="1">
                         </td>
                         <td ng-show="profile.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                        <td class="text-center">
+                        <td class="text-center item-status">
                             <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                            <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
                             <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+	                        <span><b>{{item.errorMessage}}</b></span>                            
                         </td>
                         <td nowrap>
 
@@ -97,34 +95,65 @@
 	</div>
 	<!-- TODO: make 3x3 table using service with default 3x3 but can be configured -->
 	<div class="gallery">
-		<div ng-repeat="photo in profile.user.photos" class="gallery-photo--wrapper">
+		<div ng-repeat="photo in profile.user.gallery.photos" class="gallery-photo--wrapper">
 			<a ng-href="{{photo.SrcOriginal}}" class="gallery-photo-link" ng-attr-title="{{photo.Description}}">
 				<img ng-src="{{photo.SrcPreview}}" class="gallery-photo" ng-attr-title="{{photo.Description}}">
 			</a>	
 		</div>
 		<nav>
-			<ul class="pagination" ng-init="profile.photos.photosPage = 1;">
+			<ul class="pagination" ng-init="profile.user.gallery.photosPage = 1;">
 				<li>
-					<a href aria-label="Previous" ng-click="profile.photos.photosPage = 
-					(profile.photos.photosPage > 1 ? profile.photos.photosPage - 1 : profile.photos.photosPage); 
+					<a href aria-label="Previous" ng-click="profile.user.gallery.photosPage = 
+					(profile.user.gallery.photosPage > 1 ? profile.user.gallery.photosPage - 1 : profile.user.gallery.photosPage); 
 						profile.selectPage()">
 						<span aria-hidden="true">&laquo;</span>
 					</a>
 				</li>
-				<li data-ng-repeat="page in [] | range:profile.photos.pages" ng-class="{ 'active' : profile.photos.photosPage == page}">
-					<a href ng-click="profile.photos.photosPage = page; profile.selectPage(page)">
+				<li data-ng-repeat="page in [] | range:profile.user.gallery.pages" ng-class="{ 'active' : profile.user.gallery.photosPage == page}">
+					<a href ng-click="profile.user.gallery.photosPage = page; profile.selectPage(page)">
 						{{page}}
 					</a>
 				</li>
 				<li>
-					<a href aria-label="Next"  ng-click="profile.photos.photosPage = 
-					(profile.photos.photosPage < profile.photos.pages ? profile.photos.photosPage + 1 : profile.photos.photosPage);
+					<a href aria-label="Next"  ng-click="profile.user.gallery.photosPage = 
+					(profile.user.gallery.photosPage < profile.user.gallery.pages ? profile.user.gallery.photosPage + 1 : profile.user.gallery.photosPage);
 						profile.selectPage()">
 						<span aria-hidden="true">&raquo;</span>
 					</a>
 				</li>
 			</ul>
 		</nav>
+	</div>
+	<div class="admin-handling" ng-show="profile.user.role.Name == 'admin' || profile.user.role.Name == 'moderator'">
+		
+		<div>
+			<button type="button" class="btn btn-info" ng-click="profile.getUsers()">Users</button>
+		</div>
+		<div class="list-group"> 
+			<div class="user--info list-group-item" ng-click="" ng-repeat="user in profile.users" style="display: block">
+				<div class="user--login list-group-item-heading">
+					Login: {{user.login}}
+				</div>
+				<div>
+					<div class="user--account">
+						<span class="account-type" ng-style="{'color': user.account.color}">{{user.account.Name}}</span> account
+					</div>
+					<div class="user--first-name">
+						First name: {{user.firstName}}
+					</div>
+					<div class="user--last-name">
+						Last name: {{user.lastName}}
+					</div>
+					<div class="user--role">
+						Role: <span class="badge">{{user.role.Name}}</span>
+					</div>
+					</br>
+					<div class="user--album-details">
+						
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 <script src="/App/js/jquery.magnific-popup.js"></script> 
 <!-- Star-rating plugin -->

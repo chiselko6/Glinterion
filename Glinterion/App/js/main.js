@@ -20,7 +20,7 @@ function config($routeProvider, $compileProvider, $locationProvider) {
             templateUrl: "/app/partials/home.html",
             controller: "HomeController"
         }).
-        when("/profile/:userLogin", {
+        when("/profile", {
             templateUrl: "/app/partials/profile.html",
             controller: "ProfileController"
         }).

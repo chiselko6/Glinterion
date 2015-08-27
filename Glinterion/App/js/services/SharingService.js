@@ -7,5 +7,5 @@ sharingService.$inject = [
 function sharingService() {
 	var that = this;
 
-	this.userName = "";
+	this.user = {};
 }

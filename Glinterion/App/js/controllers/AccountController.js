@@ -12,7 +12,7 @@ function accountController(CouponCheckingService, SharingService) {
 	account.serial = {};
 	account.isRejected = false;
 	account.isAccepted = false;
-    account.userName = SharingService.userName;
+    account.userName = SharingService.user.userName;
 
 	account.enter = function(accountNumber) {
 		var serial = account.serial.part1 + account.serial.part2 + account.serial.part3;

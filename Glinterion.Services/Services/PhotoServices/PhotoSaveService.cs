@@ -31,13 +31,8 @@ namespace Glinterion.Services.PhotoServices
 
         public async Task<HttpResponseMessage> Save(Stream dataStream, User user, string photoDescription, double? rating, string fileExtension, bool isAvatar)
         {
-            //var allPhotosCount = photosDb.GetAll().Count();
-            
-            //int photoNumber = photosDb.GetAll().AsEnumerable().Count(ph => ph.User.UserId == userId) + 1;
-            //var dataStream = await file.ReadAsStreamAsync();
 
             var bufferOriginal = new byte[dataStream.Length];
-            // TODO: 
             var maxSize = user.Account.MaxSize;
             var photos = user.Photos;
             var currentSize = (photos == null ? 0 : photos.Sum(p => p.Size));
@@ -49,7 +44,7 @@ namespace Glinterion.Services.PhotoServices
                 return response;
             };
             await dataStream.ReadAsync(bufferOriginal, 0, (int)dataStream.Length);
-            //var prefix = System.Configuration.ConfigurationManager.AppSettings["pathSave"] ?? "~/images/";
+            //var prefix = System.Configuration. .ConfigurationManager.AppSettings["pathSave"] ?? "~/images/";
             var prefix = "~/images/";
             var uploadFolderOriginal = prefix + user.Login + "/original/";
             var uploadFolderPreview = prefix + user.Login + "/preview/";
@@ -60,7 +55,6 @@ namespace Glinterion.Services.PhotoServices
 
             var bufferPreview = PhotoConverter.Resize(bufferOriginal, 100, 100);
 
-            // TODO: get file extension
             var suffix = Guid.NewGuid() + "." + fileExtension;
             rootOriginal +=  suffix;
             uploadFolderOriginal += suffix;
@@ -83,13 +77,7 @@ namespace Glinterion.Services.PhotoServices
                 Rating = rating,
                 SrcOriginal = uploadFolderOriginal,
                 SrcPreview = uploadFolderPreview,
-                //UserId = user.UserId,
-                //PhotoId = 1
             };
-            //if (isAvatar)
-            //{
-            //    user.Avatar = photo;
-            //}
             photosDb.Add(photo);
             photosDb.Save();
             var result = new HttpResponseMessage(HttpStatusCode.OK);

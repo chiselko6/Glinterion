@@ -19,12 +19,14 @@ using System.Web.Http.Description;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI.WebControls;
+using Glinterion.Common;
 using Glinterion.DAL;
 using Glinterion.DAL.IRepository;
 using Glinterion.DAL.Repository;
 using Glinterion.Models;
 using Glinterion.Services.PhotoServices;
 using Newtonsoft.Json;
+using h = System.Web.Http;
 
 namespace Glinterion.Controllers
 {
@@ -50,20 +52,24 @@ namespace Glinterion.Controllers
         }
         
         // GET: api/Photos
-        [System.Web.Http.Authorize(Roles = "admin")]
-        public IEnumerable<Photo> GetPhotos()
+        [h.Authorize]
+        [RolesAuthorize("admin", "moderator")]
+        [h.Route("~/api/photos")]
+        public IEnumerable<Photo> GetAllPhotos()
         {
             return photosDb.GetAll();
         }
 
-        public IEnumerable<Photo> UserPhotos()
+        [h.Route("~/api/photos/userphotos")]
+        [h.HttpGet]
+        public IEnumerable<Photo> GetPhotos()
         {
             var userName = User.Identity.Name;
             return photosDb.GetAll(photo => photo.User.Login == userName);
         }
 
-        [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("~/api/photos/totalsize")]
+        [h.HttpGet]
+        [h.Route("~/api/photos/gcd")]
         public double TotalSize()
         {
             var userName = User.Identity.Name;
@@ -76,7 +82,8 @@ namespace Glinterion.Controllers
             return photos.Sum(photo => photo.Size);
         }
 
-        [System.Web.Http.HttpGet]
+        [h.HttpGet]
+        [h.Route("~/api/photos/totalnumber")]
         public double TotalNumber()
         {
             var userName = User.Identity.Name;
@@ -85,6 +92,7 @@ namespace Glinterion.Controllers
         }
 
         // GET: api/Photos
+        [h.Route("~/api/photos")]
         public IEnumerable<Photo> GetPhotos(int pageNumber, int photosPerPage)
         {
             var userName = User.Identity.Name;
@@ -104,66 +112,23 @@ namespace Glinterion.Controllers
             return null;
         }
 
-            // GET: api/Photos/5
-        //[ResponseType(typeof(Photo))]
-        //public IHttpActionResult GetPhoto(int id)
-        //{
-        //    Photo photo = photosDb.GetById(id);
-        //    if (photo == null)
-        //    {
-        //        return NotFound();
-        //    }
+             //GET: api/Photos/5
+        [ResponseType(typeof(Photo))]
+        [h.Authorize]
+        [RolesAuthorize("admin", "moderator")]
+        public IHttpActionResult GetPhoto(int id)
+        {
+            Photo photo = photosDb.GetById(id);
+            if (photo == null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok(photo);
-        //}
-
-        // PUT: api/Photos/5
-        //[ResponseType(typeof(void))]
-        //public IHttpActionResult PutPhoto(int id, Photo photo)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    if (id != photo.PhotoId)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    photosDb.Update(photo);
-
-        //    try
-        //    {
-        //        photosDb.Save();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!PhotoExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
-
-        //[System.Web.Http.HttpPost]
-        //public void UploadAvatar(HttpPostedFileBase file)
-        //{
-        //    var userName = User.Identity.Name;
-        //    var user = usersDb.Get(u => u.Login == userName);
-        //    if (file != null)
-        //    {
-        //        photoSaveService.Save(file.InputStream, user, null, null, file.FileName, true);
-        //    }
-        //}
-
-        [System.Web.Http.HttpPost]// This is from System.Web.Http, and not from System.Web.Mvc
+            return Ok(photo);
+        }
+        
+        [h.HttpPost]
+        [h.Authorize]
         public async Task<HttpResponseMessage> Upload()
         {
             if (!Request.Content.IsMimeMultipartContent())

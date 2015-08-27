@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glinterion.App", "Glinterio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glinterion.Services", "Glinterion.Services\Glinterion.Services.csproj", "{AA296C34-B37E-4CA9-AC06-4BF8F55F2FD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glinterion.Common", "Glinterion.Common\Glinterion.Common.csproj", "{489C90F3-0677-4026-B5A1-2BFE3CFBED9B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glinterion.Common", "Glinterion.Common\Glinterion.Common.csproj", "{F1DE6DC4-6F8D-44D8-AB19-6C3F8693D278}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +53,10 @@ Global
 		{AA296C34-B37E-4CA9-AC06-4BF8F55F2FD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA296C34-B37E-4CA9-AC06-4BF8F55F2FD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA296C34-B37E-4CA9-AC06-4BF8F55F2FD9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{489C90F3-0677-4026-B5A1-2BFE3CFBED9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{489C90F3-0677-4026-B5A1-2BFE3CFBED9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{489C90F3-0677-4026-B5A1-2BFE3CFBED9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{489C90F3-0677-4026-B5A1-2BFE3CFBED9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1DE6DC4-6F8D-44D8-AB19-6C3F8693D278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1DE6DC4-6F8D-44D8-AB19-6C3F8693D278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1DE6DC4-6F8D-44D8-AB19-6C3F8693D278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1DE6DC4-6F8D-44D8-AB19-6C3F8693D278}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

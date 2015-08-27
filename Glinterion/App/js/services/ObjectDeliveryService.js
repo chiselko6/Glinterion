@@ -19,14 +19,14 @@ function ObjectDeliveryService($resource, $http) {
 	var that = this;
 
 	this.getPhotos = function(pageNumber, photosPerPage) {
-    	return $resource("../../api/photos", {pageNumber: 1, photosPerPage: 1}, {
+    	return $resource("../../api/photos/", {pageNumber: 1, photosPerPage: 1}, {
         	query: { method: "GET", params: {pageNumber: pageNumber, photosPerPage: photosPerPage}, isArray: true }
     	});
 	}
 
 	// here we don't use $resource because it's supposed to be used for rest services
 	this.getTotalSize = function() {
-		return $http.get("../../api/photos/TotalSize");
+		return $http.get("../../api/photos/gcd");
 		// return $resource("../../api/photos/TotalSize", {}, {
 		// 	query: {method: "GET", params: {}, isArray: false}
 		// });
@@ -39,10 +39,14 @@ function ObjectDeliveryService($resource, $http) {
 		// });
 	}
 
-    this.getUser = function(userName) {
-        return $http.get("../../api/users/userAccount");
+    this.getUser = function() {
+        return $http.get("../../api/users/user");
         // return $resource("../../api/users/userAccount", {userName: ""}, {
         //     query: {method: "GET", params: {userName: userName}, isArray: false}
         // });
+    }
+
+    this.getUsers = function() {
+    	return $http.get("../../api/users");
     }
 }
