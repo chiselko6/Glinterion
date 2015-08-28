@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glinterion", "Glinterion\Glinterion.csproj", "{22DF9CF1-BF14-49CA-B2B3-F7AE505E6312}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glinterion.Tests", "Glinterion.Tests\Glinterion.Tests.csproj", "{57D98B50-C858-40F7-A0DD-EFDA3756E94A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glinterion.Entities", "Glinterion.Entities\Glinterion.Entities.csproj", "{E9588516-90B0-40FD-8DAB-7B3F94259CCB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glinterion.API", "Glinterion.API\Glinterion.API.csproj", "{8E67C5DA-F2E3-480D-BEB5-4364A5DB5274}"
@@ -27,10 +25,6 @@ Global
 		{22DF9CF1-BF14-49CA-B2B3-F7AE505E6312}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22DF9CF1-BF14-49CA-B2B3-F7AE505E6312}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22DF9CF1-BF14-49CA-B2B3-F7AE505E6312}.Release|Any CPU.Build.0 = Release|Any CPU
-		{57D98B50-C858-40F7-A0DD-EFDA3756E94A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57D98B50-C858-40F7-A0DD-EFDA3756E94A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57D98B50-C858-40F7-A0DD-EFDA3756E94A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57D98B50-C858-40F7-A0DD-EFDA3756E94A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9588516-90B0-40FD-8DAB-7B3F94259CCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9588516-90B0-40FD-8DAB-7B3F94259CCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9588516-90B0-40FD-8DAB-7B3F94259CCB}.Release|Any CPU.ActiveCfg = Release|Any CPU

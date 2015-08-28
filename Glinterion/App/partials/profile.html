@@ -94,7 +94,7 @@
 		</div>
 	</div>
 	<!-- TODO: make 3x3 table using service with default 3x3 but can be configured -->
-	<div class="gallery" ng-show="profile.uploader.queue.length">
+	<div class="gallery" ng-show="profile.user.gallery.photos.length">
 		<div ng-repeat="photo in profile.user.gallery.photos" class="gallery-photo--wrapper">
 			<a ng-href="{{photo.SrcOriginal}}" class="gallery-photo-link" ng-attr-title="{{photo.Description}}">
 				<img ng-src="{{photo.SrcPreview}}" class="gallery-photo" ng-attr-title="{{photo.Description}}">

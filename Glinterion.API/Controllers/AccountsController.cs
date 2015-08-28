@@ -13,7 +13,10 @@ using Glinterion.Common;
 using Glinterion.DAL;
 using Glinterion.DAL.IRepository;
 using Glinterion.Models;
-using h = System.Web.Http;
+using Route = System.Web.Http.RouteAttribute;
+using Authorize = System.Web.Http.AuthorizeAttribute;
+using HttpGet = System.Web.Http.HttpGetAttribute;
+using HttpPost = System.Web.Http.HttpPostAttribute;
 
 namespace Glinterion.Controllers
 {
@@ -33,7 +36,7 @@ namespace Glinterion.Controllers
 
         // GET: api/Accounts
         [RolesAuthorize("admin", "moderator")]
-        [h.Authorize]
+        [Authorize]
         public IQueryable<Account> GetAccounts()
         {
             return accountsDb.GetAll().AsQueryable();
@@ -42,7 +45,7 @@ namespace Glinterion.Controllers
         // GET: api/Accounts/5
         [ResponseType(typeof(Account))]
         [RolesAuthorize("admin", "moderator")]
-        [h.Authorize]
+        [Authorize]
         public IHttpActionResult GetAccount(int id)
         {
             Account account = accountsDb.GetById(id);
@@ -57,7 +60,7 @@ namespace Glinterion.Controllers
         // PUT: api/Accounts/5
         [ResponseType(typeof(void))]
         [RolesAuthorize("admin", "moderator")]
-        [h.Authorize]
+        [Authorize]
         public IHttpActionResult PutAccount(int id, Account account)
         {
             if (!ModelState.IsValid)
@@ -93,7 +96,7 @@ namespace Glinterion.Controllers
 
         // POST: api/Accounts
         [ResponseType(typeof(Account))]
-        [h.Authorize]
+        [Authorize]
         [RolesAuthorize("admin", "moderator")]
         public IHttpActionResult PostAccount(Account account)
         {
@@ -110,7 +113,7 @@ namespace Glinterion.Controllers
 
         // DELETE: api/Accounts/5
         [ResponseType(typeof(Account))]
-        [h.Authorize]
+        [Authorize]
         [RolesAuthorize("admin", "moderator")]
         public IHttpActionResult DeleteAccount(int id)
         {
@@ -126,9 +129,18 @@ namespace Glinterion.Controllers
             return Ok(account);
         }
 
-        [h.Authorize]
-        [h.Route("api/accounts/check")]
-        [h.HttpGet]
+        //private Account Clean(Account account)
+        //{
+        //    var dumpSerials = account.Serials;
+        //    account.Serials = null;
+        //    var dumpUsers = account.Users;
+        //    account.Users = null;
+        //    return account;
+        //}
+
+        [Authorize]
+        [Route("api/accounts/check")]
+        [HttpGet]
         public HttpResponseMessage Check(string serial)
         {
             var userName = User.Identity.Name;

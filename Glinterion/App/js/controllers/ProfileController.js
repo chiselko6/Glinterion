@@ -75,11 +75,12 @@ function ProfileController($scope, $routeParams, SharingService, Chart, ColorCon
 	var totalSize = ObjectDelivery.getTotalSize();
 	totalSize.success(function(data) {
 		profile.user.gallery.totalSize = +(+data.toFixed(2));
-		profile.selectPage();
+		
 	});
 
 	$q.all([totalSize, getUser]).then(function(data) {
 		Chart.apply("size", profile.user.gallery.totalSize, profile.user.account.MaxSize - profile.user.gallery.totalSize);
+		profile.selectPage();
 	})
 
 	function getTotalPages() {

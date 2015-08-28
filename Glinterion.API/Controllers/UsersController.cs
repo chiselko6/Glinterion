@@ -13,7 +13,9 @@ using System.Web.Security;
 using Glinterion.Common;
 using Glinterion.DAL.IRepository;
 using Glinterion.Models;
-using h = System.Web.Http;
+using Route = System.Web.Http.RouteAttribute;
+using AuthorizeAttribute = System.Web.Http.AuthorizeAttribute;
+using HttpGet = System.Web.Http.HttpGetAttribute;
 
 namespace Glinterion.Controllers
 {
@@ -29,9 +31,9 @@ namespace Glinterion.Controllers
             accountsDb = uof.Repository<Account>();
         }
 
-        [h.Authorize]
+        [Authorize]
         [RolesAuthorize("admin", "moderator")]
-        [h.Route("~/api/users")]
+        [Route("~/api/users")]
         // GET: api/Users
         public IQueryable<User> GetUsers()
         {
@@ -54,7 +56,7 @@ namespace Glinterion.Controllers
 
         // DELETE: api/Users/5
         [ResponseType(typeof (User))]
-        [h.Authorize]
+        [Authorize]
         [RolesAuthorize("admin", "moderator")]
         public IHttpActionResult DeleteUser(int id)
         {
@@ -70,14 +72,27 @@ namespace Glinterion.Controllers
             return Ok(user);
         }
 
-        [h.Authorize]
-        [h.Route("~/api/users/user")]
-        [h.HttpGet]
+        //private User Clean(User user)
+        //{
+        //    var dumpSerials = user.Account.Serials;
+        //    user.Account.Serials = null;
+        //    var dumpAccountUsers = user.Account.Users;
+        //    user.Account.Users = null;
+        //    var dumpRoleUsers = user.Role.Users;
+        //    user.Role.Users = null;
+        //    var dumpUserPassword = user.Password;
+        //    user.Password = null;
+        //    return user;
+        //}
+
+        [Authorize]
+        [Route("~/api/users/user")]
+        [HttpGet]
         public User GetUserInfo()
         {
             var userName = User.Identity.Name;
-            var user = usersDb.Get(u => u.Login == userName);
-            return user;
+            //return Clean(usersDb.Get(u => u.Login == userName));
+            return usersDb.Get(u => u.Login == userName);
         }
 
     private bool UserExists(int id)

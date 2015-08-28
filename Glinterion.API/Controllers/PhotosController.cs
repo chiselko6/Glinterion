@@ -26,7 +26,10 @@ using Glinterion.DAL.Repository;
 using Glinterion.Models;
 using Glinterion.Services.PhotoServices;
 using Newtonsoft.Json;
-using h = System.Web.Http;
+using Route = System.Web.Http.RouteAttribute;
+using Authorize = System.Web.Http.AuthorizeAttribute;
+using HttpGet = System.Web.Http.HttpGetAttribute;
+using HttpPost = System.Web.Http.HttpPostAttribute;
 
 namespace Glinterion.Controllers
 {
@@ -52,24 +55,41 @@ namespace Glinterion.Controllers
         }
         
         // GET: api/Photos
-        [h.Authorize]
+        [Authorize]
         [RolesAuthorize("admin", "moderator")]
-        [h.Route("~/api/photos")]
+        [Route("~/api/photos")]
         public IEnumerable<Photo> GetAllPhotos()
         {
             return photosDb.GetAll();
         }
 
-        [h.Route("~/api/photos/userphotos")]
-        [h.HttpGet]
+        //private IEnumerable<Photo> Clean(IEnumerable<Photo> photos)
+        //{
+        //    photos = photos.AsEnumerable().Select(photo =>
+        //    {
+        //        var dumpUserAccount = photo.User.Account;
+        //        photo.User.Account = null;
+        //        var dumpUserPassword = photo.User.Password;
+        //        photo.User.Password = null;
+        //        var dumpUserRole = photo.User.Role;
+        //        photo.User.Role = null;
+        //        return photo;
+        //    });
+        //    return photos;
+        //}
+
+        [Route("~/api/photos/userphotos")]
+        [HttpGet]
         public IEnumerable<Photo> GetPhotos()
         {
             var userName = User.Identity.Name;
+            //return Clean(photosDb.GetAll(photo => photo.User.Login == userName));
             return photosDb.GetAll(photo => photo.User.Login == userName);
+
         }
 
-        [h.HttpGet]
-        [h.Route("~/api/photos/gcd")]
+        [HttpGet]
+        [Route("~/api/photos/gcd")]
         public double TotalSize()
         {
             var userName = User.Identity.Name;
@@ -82,8 +102,8 @@ namespace Glinterion.Controllers
             return photos.Sum(photo => photo.Size);
         }
 
-        [h.HttpGet]
-        [h.Route("~/api/photos/totalnumber")]
+        [HttpGet]
+        [Route("~/api/photos/totalnumber")]
         public double TotalNumber()
         {
             var userName = User.Identity.Name;
@@ -92,7 +112,7 @@ namespace Glinterion.Controllers
         }
 
         // GET: api/Photos
-        [h.Route("~/api/photos")]
+        [Route("~/api/photos")]
         public IEnumerable<Photo> GetPhotos(int pageNumber, int photosPerPage)
         {
             var userName = User.Identity.Name;
@@ -103,10 +123,12 @@ namespace Glinterion.Controllers
             }
             if (photos.Count() >= pageNumber*photosPerPage)
             {
+                //return Clean(photos.Skip((pageNumber - 1)*photosPerPage).Take(photosPerPage));
                 return photos.Skip((pageNumber - 1)*photosPerPage).Take(photosPerPage);
             }
             if (photos.Count() > (pageNumber - 1)*photosPerPage)
             {
+                //return Clean(photos.Skip((pageNumber - 1)*photosPerPage).Take(photos.Count() - (pageNumber - 1)*photosPerPage));
                 return photos.Skip((pageNumber - 1)*photosPerPage).Take(photos.Count() - (pageNumber - 1)*photosPerPage);
             }
             return null;
@@ -114,7 +136,7 @@ namespace Glinterion.Controllers
 
              //GET: api/Photos/5
         [ResponseType(typeof(Photo))]
-        [h.Authorize]
+        [Authorize]
         [RolesAuthorize("admin", "moderator")]
         public IHttpActionResult GetPhoto(int id)
         {
@@ -127,8 +149,8 @@ namespace Glinterion.Controllers
             return Ok(photo);
         }
         
-        [h.HttpPost]
-        [h.Authorize]
+        [HttpPost]
+        [Authorize]
         public async Task<HttpResponseMessage> Upload()
         {
             if (!Request.Content.IsMimeMultipartContent())
