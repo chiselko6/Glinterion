@@ -147,7 +147,7 @@ function ProfileController($scope, $routeParams, SharingService, Chart, ColorCon
 	}
 
 	profile.uploader.onErrorItem = function(item, response, status, headers) {
-		item.errorMessage = response;
+		item.errorMessage = (response.ExceptionMessage ? response.ExceptionMessage : response);
 	}
 
     profile.abortUpload = function (index) {
